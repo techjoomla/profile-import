@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0" method="upgrade">
+	<name>ProfileImport</name>
+	<creationDate>Oct 2011</creationDate>
+	<author>TechJoomla</author>
+	<authorEmail>TechJoomla</authorEmail>
+	<authorUrl>contact@techjoomla.com</authorUrl>
+	<version>1.0</version>
+	<description>Import Profile for your Joomla website ! </description>
+    <!-- installation part -->
+    
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<installfile>install.profileimport.php</installfile>
+	<files folder="site">
+		<folder>controllers</folder>
+		<folder>css</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+		<folder>images</folder>
+		<file>controller.php</file>
+		<file>helper.php</file>
+		<file>index.html</file>	
+		<file>profileimport.php</file>
+		
+	</files>
+	<languages folder="site/language">
+		<language tag="en-GB">en-GB/en-GB.com_profileimport.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.com_profileimport.ini</language>
+		<language tag="zh-TW">zh-TW/zh-TW.com_profileimport.ini</language>		
+	</languages>
+	
+	<administration>
+		<menu link="option=com_profileimport" img="components/com_profileimport/images/broadcast16x16.png">COM_PROFILEIMPORT</menu>
+		<files folder="admin">
+			<folder>sql</folder>
+			<folder>config</folder>	
+			<folder>controllers</folder>	
+			<folder>css</folder>	
+			<folder>images</folder>	
+			<folder>models</folder>	
+			<folder>views</folder>				
+			<file>admin.profileimport.php</file>
+			<file>controller.php</file>
+			<file>index.html</file>	
+			
+		</files>	
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_profileimport.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_profileimport.sys.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_profileimport.menu.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_profileimport.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_profileimport.sys.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_profileimport.menu.ini</language>
+			<language tag="zh-TW">zh-TW/zh-TW.com_profileimport.ini</language>			
+			<language tag="zh-TW">zh-TW/zh-TW.com_profileimport.sys.ini</language>			
+			<language tag="zh-TW">zh-TW/zh-TW.com_profileimport.menu.ini</language>									
+		</languages>
+	</administration>	
+</install>
