@@ -63,7 +63,7 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_googleplus extends JPlugin
 		$plug=array(); 
    	$plug['name']="Googleplus";
   	//check if keys are set
-		if($this->appKey=='' || $this->appSecret=='' || $this->developerKey==''  )// || !in_array($this->_name,$config)) #TODO add condition to check config
+		if($this->appKey=='' || $this->appSecret=='' || $this->developerKey==''   ||  !in_array($this->_name,$config))
 		{	
 			$plug['error_message']=true;		
 			return $plug;
