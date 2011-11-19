@@ -411,101 +411,31 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_facebook extends JPlugin
 		return true;	
 	}
 	
-	function plug_techjoomlaAPI_facebookget_profile($integr_with)
+	function plug_techjoomlaAPI_facebookget_profile($integr_with,$client,$callback)
 	{
-		if($integr_with=='JomSocial')		
-				$mapData	=& $this->params->get('mapping_field_js');			
-	
-			if($integr_with=='Joomla')
-				$mapData	=& $this->params->get('mapping_field_joomla');
-	
-			if($integr_with=='Community Builder')
-				$mapData	=& $this->params->get('mapping_field_cb');
-			try{			
-				$profileData= $this->facebook->api('/me');
-				
-			} 
-			catch (FacebookApiException $e) 
-			{
-				$response=$this->raiseLog(JText::_('LOG_GET_PROFILE_FAIL').JText::_('LOG_GET_PROFILE'),$e->getMessage(),$userid,1);
-				return false;
-		  }
-		  
-		  $profileInfo=$this->plug_techjoomlaAPI_facebookRender_profile($profileData);	
-				
-				if($profileInfo)
-				{
-					$profileDetails['profileData']=$profileInfo;					
-					$profileDetails['mapData']=$mapData;
-					return $profileDetails;
-				}
 			
-  }
-  
-  function plug_techjoomlaAPI_facebookRender_profile($profileData)
-  {
-  
-  	$data = $profileData;
- 			
-		$r_profileData=array();
-		if(isset($data['first-name']))
-		$r_profileData['first-name'] 	=	$data['first-name'];
-		
-		if(isset($data['last-name']))
-		$r_profileData['last-name'] 	=	$data['last-name'];
-		
-		if(isset($data['name']))
-		$r_profileData['name'] 				=	$data['name'];
-		
-		if(isset($data['gender']))
-		$r_profileData['gender'] 				=	ucwords($data['gender']);
-		
-		if(isset($data['email']))
-		$r_profileData['email'] 				=	$data['email'];
-		
-		if(count($data['work'])>1)
-		$r_profileData['designation']=	$data['work']['0']['position']['name'];
-		
-		if(count($data['work'])==1)
-		$r_profileData['designation']=	$data['work']['position']['name'];
-		
-		if(isset($data['location']['name']))
-		$r_profileData['location']=	$data['location']['name'];
-		
-		if(isset($data['location']) and (count($data['education'])>1))
-		$r_profileData['education']		=$data['education']['0']['degree']['name'];
-		
-		if(isset($data['location']) and (count($data['education'])==1))
-			$r_profileData['education']		=$data['educations']['education']['degree'];
-		
-		
-		if(count($data['phone-numbers']['phone-number']['phone-number'])>1)
-		$r_profileData['phone-number']		=$data['phone-numbers']['phone-number']['0']['phone-number'];
-		
-		if(count($data['phone-numbers']['phone-number'])==1)
-		$r_profileData['phone-number']		=$data['phone-numbers']['phone-number']['phone-number'];
-		
-		
-		if(isset($data['main-address']))
-		$r_profileData['main-address']=$data['main-address'];
-		
-		if(isset($data['date-of-birth']))
+			$mapData[0]		=& $this->params->get('mapping_field_0');	//joomla		
+			$mapData[1]		=& $this->params->get('mapping_field_1'); //jomsocial
+			$mapData[2]		=& $this->params->get('mapping_field_2'); //cb
+			
+		try{			
+			$profileData= $this->facebook->api('/me');
+			$profileData['picture-url']='https://graph.facebook.com/'.$profileData['id'].'/picture';
+		} 
+		catch (FacebookApiException $e) 
 		{
-			if($data['date-of-birth']['month']<10)
-			$data['date-of-birth']['month']='0'.$data['date-of-birth']['month'];
-		
-			if($data['date-of-birth']['day']<10)
-			$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
-			
-			$r_profileData['birth-date']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
+			$response=$this->raiseLog(JText::_('LOG_GET_PROFILE_FAIL').JText::_('LOG_GET_PROFILE'),$e->getMessage(),$userid,1);
+			return false;
 		}
-		
-		if(isset($data['current-status']))
-		$r_profileData['current-status']=	$data['current-status'];
-		//print_r($r_profileData);die;
-		return $r_profileData;
-  	
-  	
-  }
 
+		if($profileData)
+		{
+			$profileDetails['profileData']=$profileData;	
+			$profileDetails['mapData']=$mapData;
+			return $profileDetails;
+		}
+			
+  }
+  
+ 
 }//end class
