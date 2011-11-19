@@ -36,7 +36,7 @@
 	</languages>
 	
 	<administration>
-	<menu  img="components/com_profileimport/images/social-ads16x16.png">COM_PROFILEIMPORT</menu>
+	<menu  img="components/com_profileimport/images/icon-profileimport16x16.png">COM_PROFILEIMPORT</menu>
 	<submenu>
 			<menu link="option=com_profileimport&amp;view=settings" img="components/com_profileimport/images/process_16.png">COM_SETT</menu>
 	</submenu>		
