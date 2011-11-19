@@ -6,26 +6,17 @@ JHTML::_('behavior.tooltip');
 JHTML::_('behavior.formvalidation');
 $profileimport_config['reg_direct']='';
 require(JPATH_SITE.DS."administrator".DS."components".DS."com_profileimport".DS."config".DS."config.php");
-	$Joomla=$JomSocial=$CB='';
-		if(isset($profileimport_config['reg_direct']))
-		{
-			if($profileimport_config['reg_direct'][0]	== 'Joomla') { $Joomla = ' selected ';}
-			if($profileimport_config['reg_direct'][0]	== 'JomSocial') { $JomSocial = ' selected ';}
-			if($profileimport_config['reg_direct'][0]	== 'Community Builder'){$CB = ' selected ';}
-		}
 
 	if( isset($profileimport_config['api']) )
 		$apis =	$profileimport_config['api'];
 	else
 		$apis = '';
-/* if($profileimport_config['show_status_update'])
-		$show_status_update ='SELECTED=true';
-	else
-		$show_status_update_no ='SELECTED=true';
-	if($profileimport_config['show_status_viarss'])
-		$show_status_viarss ='SELECTED=true';
-	else
-		$show_status_viarss_no ='SELECTED=true';	*/
+
+$import = array(0=>JText::_('PF_JOOMLA'),1=>JText::_('PF_JS'), 2=>JText::_('PF_CB') );
+					$options= array();
+					foreach($import as $key=>$value) {
+						 	 $options[] = JHTML::_('select.option', $key, $value);
+		 					 }
 
 $document =& JFactory::getDocument();
 if(JVERSION >= '1.6.0')
@@ -71,26 +62,27 @@ else
 		$apiname = ucfirst(str_replace('plug_techjoomlaAPI_', '',$api->element));
 		$apiselect[] = JHTML::_('select.option',$api->element, $apiname);
 	}
+	
+	
 
 	?>
 	<table border="0" width="100%" class="adminlist">
 	<tr>
-							<td align="left" width="20%"><strong><span class="hasTip" title="<?php echo JText::_('REG_DIR_DESC') ?>"><?php echo JText::_('REG_DIR') ?>:</span></strong></td>
-							<td ><select class="inputbox" name="data[reg_direct][]">
-							<option <?php echo $Joomla ?>> Joomla </option>
-							<?php 
-				
-							if(JFolder::exists($communityfolder)) { ?>
-								<option <?php echo $JomSocial ?>> JomSocial </option>
-							<?php } 	
-				
-							if(JFolder::exists($cbfolder)) { ?>
-							<option <?php echo $CB ?>> Community Builder </option>
-							<?php } ?>
-				
-							</select>
-							</td>
-			     </tr>		
+			
+			<?php
+					$value='';
+					if($profileimport_config['reg_direct']==0)
+						$value = 0;
+					else if($profileimport_config['reg_direct']==1)
+						$value = 1;
+					else if($profileimport_config['reg_direct']==2)
+						$value = 2;
+			?>
+				<td  width="25%"><?php echo JHTML::tooltip(JText::_('REG_DIR_DESC'), JText::_('REG_DIR'), '', JText::_('REG_DIR'));?></td>
+				<td class="setting-td">
+					<?php echo $radiolist = JHTML::_('select.radiolist', $options, 'data[reg_direct]', 'class="inputbox fieldlist"  ', 'value', 'text', $value);?>
+				</td>
+		</tr>		
 		<tr>
 			<td  width="25%"><?php echo JHTML::tooltip(JText::_('SELECT_API_DES'), JText::_('SELECT_API'), '', JText::_('SELECT_API'));?></td>
 			<td class="setting-td">
