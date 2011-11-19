@@ -7,6 +7,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 jimport( 'joomla.application.component.model' );
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.database.database.mysql' );
@@ -105,6 +106,8 @@ class profileimportModelimport extends JModel
 	{
 			$db 			= JFactory::getDBO();
 			$user			= JFactory::getUser();
+			
+			$userid=$user->id;
 			if($integr_with=='0')
 				$lines		= $mapData['0']; 
 			if($integr_with=='1')
@@ -129,30 +132,18 @@ class profileimportModelimport extends JModel
 							{
 								if($integr_with=='0')
 									$return=$this->importProfile_Joomla($profileData,$mapData['0'],$db,$userid,$maparr,$pfData);
-
 								if($integr_with=='1')	
-									$return=$this->importProfile_JS($profileData,$mapData['1'],$db,$userid,$maparr,$pfData);
-										
+									$return=$this->importProfile_JS($profileData,$mapData['1'],$db,$userid,$maparr,$pfData);										
 								if($integr_with=='2')
 									$return=$this->importProfile_CB($profileData,$mapData['2'],$db,$userid,$maparr,$pfData);
 							}
 							else
 							{
+						
 								if($key=="image" and $integr_with=='1' and $js_img_upload==0)//Jomsocial Avatar Upload
-								{
-									$js_img_upload=1;									
-									$handle = fopen($pfData, "r");
-									$contents = stream_get_contents($handle);
-									$destination = JPATH_SITE .DS.'images'.DS.'avatar'.DS ;
-									JFile::write($destination.$userid.'.png',$contents);		
-									JFile::write($destination.'thumb_'.$userid.'.png',$contents);						
-									$jsAvatarfile='images/avatar/'.$userid.'.png';
-									$jsThumbnail='images/avatar/thumb_'.$userid.'.png';									
-									$query = "UPDATE #__community_users SET `avatar`= '$jsAvatarfile' and `thumb`='$jsThumbnail' WHERE  user_id = $userid ";
-									$db->setQuery($query);
-									$db->query();
-
-							
+								{									
+									$js_img_upload=1;	
+									$this->imageUploadJS($pfData,$userid,$db);
 								}
 							
 							
@@ -164,7 +155,7 @@ class profileimportModelimport extends JModel
 
 			} //foreach
 			
-			return $return;
+		return $return;
 			
 			
 	}
@@ -187,52 +178,62 @@ class profileimportModelimport extends JModel
 		$fieldid = $db->loadResult();
 		if($fieldid) {
 			$return=$jomsocial->updateUserData(trim($maparr[0]),$userid,$pfData);	
-			return $return;			
+			return 1;			
 		}	
-		else
-		return 0;
-				
-			
+		
 	}
 	
 	function importProfile_CB($profileData,$mapData,$db,$userid,$maparr,$pfData)
 	{
-	
-			jimport( 'joomla.filesystem.folder' );
-			jimport('joomla.filesystem.file');
-			$query = "SELECT name FROM #__comprofiler_fields WHERE name=".$db->Quote($maparr[0]);
-	
+			$query = "SELECT name FROM #__comprofiler_fields WHERE name=".$db->Quote($maparr[0]);	
 			$db->setQuery($query);
 			$fieldname = $db->loadResult();
-
+			
 			if($fieldname) {	
-			if($fieldname=='avatar')
-			{
+				if($fieldname=='avatar')
+				{
+				$pfData=$this->imageUploadCB($pfData,$userid);			
+				}
+
+				$query = "UPDATE #__comprofiler SET `".$fieldname."`= '$pfData' WHERE  user_id = $userid ";
+				$db->setQuery($query);
+				$db->query();				
+				return 1;
+			}	
+	}
+
+	function imageUploadJS($pfData,$userid,$db)
+	{
+			jimport( 'joomla.filesystem.folder' );
+			jimport('joomla.filesystem.file');			
+			$handle 			= fopen($pfData, "r");
+			$contents 		= stream_get_contents($handle);
+			$query = "SELECT md5($userid)";
+			$db->setQuery($query);
+			$imgnm = $db->loadResult();
+			$destination	= JPATH_SITE .DS.'images'.DS.'avatar'.DS;
+			JFile::write($destination.$imgnm.'.png',$contents);		
+			JFile::write($destination.'thumb_'.$imgnm.'.png',$contents);	
+
+			$jsAvatarfile='images/avatar/'.$imgnm.'.png';
+			$jsThumbnail='images/avatar/thumb_'.$imgnm.'.png';									
+			$query = "UPDATE #__community_users SET `avatar`= '$jsAvatarfile' , `thumb`='$jsThumbnail' WHERE  userid = $userid ";
+			$db->setQuery($query);
+			$db->query();
+	
+	}
+	
+	function imageUploadCB($pfData,$userid)
+	{
+			jimport( 'joomla.filesystem.folder' );
+			jimport('joomla.filesystem.file');			
 			
 			$handle = fopen($pfData, "r");
 			$contents = stream_get_contents($handle);
 			$destination = JPATH_SITE .DS.'images'.DS.'comprofiler'.DS.'gallery'.DS ;
 			JFile::write($destination.$userid.'.png',$contents);				
 			$pfData='gallery/'.$userid.'.png';
-			}
-			
-			 		$query = "UPDATE #__comprofiler SET `".$fieldname."`= '$pfData' WHERE  user_id = $userid ";
-					$db->setQuery($query);
-					$db->query();
-				
-					return 1;
-				}	
-				else
-				return 0;
-				
-
+			return $pfData;
 	}
-
-	function imageUploadJS()
-	{
-	
-	
-	}
-
 
 }//end class
