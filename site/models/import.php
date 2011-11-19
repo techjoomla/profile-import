@@ -76,16 +76,19 @@ class profileimportModelimport extends JModel
 		
 		
 		// include the Helper class of plugin
+		
 		if(JVERSION >='1.6.0')
 			require_once(JPATH_SITE.DS.'plugins'.DS.'techjoomlaAPI'.DS.$pluginName.DS.$pluginName.DS.'helper'.DS.'helper.php');
 		else
 			require_once(JPATH_SITE.DS.'plugins'.DS.'techjoomlaAPI'.DS.$pluginName.DS.'helper'.DS.'helper.php');
 		
 		//call to function from plugin helper file and get Raw data	
+		
 		JPluginHelper::importPlugin('techjoomlaAPI',$pluginName);
 		$profileDetails 		=	$dispatcher->trigger($session->get('api_used').'get_profile',array($integr_with,$client,$callback));
 		
 		//call to function from plugin helper file and get Rendered Array	
+		
 		$pluginHelperClassName		=	$pluginName.'Helper';
 		$pluginHelper 						= new $pluginHelperClassName;
 		$profilefunction					=	$pluginName.'Render_profile';		
@@ -93,9 +96,9 @@ class profileimportModelimport extends JModel
 		$mapData									=	$profileDetails[0]['mapData'];
 		if(!empty($profileDetails[0]['profileData']))
 		{
-			$this->importProfileRenderData($profileData,$mapData,$integr_with);
+			$return=$this->importProfileRenderData($profileData,$mapData,$integr_with);
 		}
-	
+		return $return;
 	}
 	
 	function importProfileRenderData($profileData,$mapData,$integr_with)
@@ -108,35 +111,62 @@ class profileimportModelimport extends JModel
 				$lines		= $mapData['1']; 		
 			if($integr_with=='2')
 				$lines		= $mapData['2']; 				
-			
 			$userid 	= $user->id;
-			$maptext 	= explode("\n",$lines);
+			$maptext 	= explode("\n",trim($lines));
 			
-				
+			$js_img_upload=0;
 			foreach ($profileData as $key=>$pfData) 
 			{
 				foreach ($maptext as $mapkey=>$fieldmap) 
 				{
 					
-					$maparr=array('0'=>0,'1'=>0,'2'=>0);					
+					$maparr		=array('0'=>0,'1'=>0,'2'=>0);					
 					$maparr 	= explode("=",trim($fieldmap));
-					
-					if($maparr['1']==$key)
-					{
-						
-						if($integr_with=='0')
-							$this->importProfile_Joomla($profileData,$mapData['0'],$db,$userid,$maparr,$pfData);
-
-						if($integr_with=='1')	
-							$this->importProfile_JS($profileData,$mapData['1'],$db,$userid,$maparr,$pfData);
 										
-						if($integr_with=='2')
-							$this->importProfile_CB($profileData,$mapData['2'],$db,$userid,$maparr,$pfData);
-						}
-					}
+					if(isset($pfData) and isset($maparr['1']))
+					{
+							if(trim($maparr['1'])==trim($key))
+							{
+								if($integr_with=='0')
+									$return=$this->importProfile_Joomla($profileData,$mapData['0'],$db,$userid,$maparr,$pfData);
 
-			} // end foreach
-			die;
+								if($integr_with=='1')	
+									$return=$this->importProfile_JS($profileData,$mapData['1'],$db,$userid,$maparr,$pfData);
+										
+								if($integr_with=='2')
+									$return=$this->importProfile_CB($profileData,$mapData['2'],$db,$userid,$maparr,$pfData);
+							}
+							else
+							{
+								if($key=="image" and $integr_with=='1' and $js_img_upload==0)//Jomsocial Avatar Upload
+								{
+									$js_img_upload=1;									
+									$handle = fopen($pfData, "r");
+									$contents = stream_get_contents($handle);
+									$destination = JPATH_SITE .DS.'images'.DS.'avatar'.DS ;
+									JFile::write($destination.$userid.'.png',$contents);		
+									JFile::write($destination.'thumb_'.$userid.'.png',$contents);						
+									$jsAvatarfile='images/avatar/'.$userid.'.png';
+									$jsThumbnail='images/avatar/thumb_'.$userid.'.png';									
+									$query = "UPDATE #__community_users SET `avatar`= '$jsAvatarfile' and `thumb`='$jsThumbnail' WHERE  user_id = $userid ";
+									$db->setQuery($query);
+									$db->query();
+
+							
+								}
+							
+							
+							}//else
+						
+						}//if
+						
+					}//foreach
+
+			} //foreach
+			
+			return $return;
+			
+			
 	}
 
 	function importProfile_Joomla($profileData,$mapData,$db,$userid,$maparr,$pfData)
@@ -146,7 +176,6 @@ class profileimportModelimport extends JModel
 		
 	function importProfile_JS($profileData,$mapData,$db,$userid,$maparr,$pfData)
 	{
-		
 		$jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
 		if(JFolder::exists($jspath))
 		include_once($jspath.DS.'libraries'.DS.'core.php');
@@ -157,28 +186,53 @@ class profileimportModelimport extends JModel
 		$db->setQuery($query);
 		$fieldid = $db->loadResult();
 		if($fieldid) {
-				$jomsocial->updateUserData( trim($maparr[0]), $userid , $pfData);	
-			return 1;			
+			$return=$jomsocial->updateUserData(trim($maparr[0]),$userid,$pfData);	
+			return $return;			
 		}	
+		else
+		return 0;
 				
 			
 	}
 	
 	function importProfile_CB($profileData,$mapData,$db,$userid,$maparr,$pfData)
 	{
-				$query = "SELECT name FROM #__comprofiler_fields WHERE title=".$db->Quote($maparr[0]);
-				$db->setQuery($query);
-				$fieldid = $db->loadResult();
-				if($fieldid) {	
-					$query = "UPDATE #__comprofiler SET `".$fieldid."`= '$pfData' WHERE  user_id = $userid ";
+	
+			jimport( 'joomla.filesystem.folder' );
+			jimport('joomla.filesystem.file');
+			$query = "SELECT name FROM #__comprofiler_fields WHERE name=".$db->Quote($maparr[0]);
+	
+			$db->setQuery($query);
+			$fieldname = $db->loadResult();
+
+			if($fieldname) {	
+			if($fieldname=='avatar')
+			{
+			
+			$handle = fopen($pfData, "r");
+			$contents = stream_get_contents($handle);
+			$destination = JPATH_SITE .DS.'images'.DS.'comprofiler'.DS.'gallery'.DS ;
+			JFile::write($destination.$userid.'.png',$contents);				
+			$pfData='gallery/'.$userid.'.png';
+			}
+			
+			 		$query = "UPDATE #__comprofiler SET `".$fieldname."`= '$pfData' WHERE  user_id = $userid ";
 					$db->setQuery($query);
 					$db->query();
+				
+					return 1;
 				}	
+				else
+				return 0;
 				
 
 	}
 
+	function imageUploadJS()
+	{
 	
+	
+	}
 
 
 }//end class

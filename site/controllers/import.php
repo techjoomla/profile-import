@@ -51,10 +51,13 @@ class profileimportControllerimport extends JController
 		$session =& JFactory::getSession();	
 		$api_used =JRequest::getVar('api');
 		$model = $this->getModel('import');
-		$model->importProfile($api_used);
-
-		$currentMenu = $session->get('currentMenu'); 
-		$mainframe->redirect( JURI::base(), $msg);
+		$return=$model->importProfile($api_used);
+		$itemid=$session->get("PFI_itemid",'');
+		if($return)
+		$msg=JText::_("PF_IMPORT_SUCCESS");
+		else
+		$msg=JText::_("PF_IMPORT_FAIL");
+		$mainframe->redirect( JRoute::_(JURI::base().'index.php?option=com_profileimport&view=import&itemid='.$itemid), $msg);
 	}
 } //class
 

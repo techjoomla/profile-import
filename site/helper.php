@@ -2,13 +2,67 @@
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
 class comprofileimportHelper
-{ 	
-	function getapistatus(){
-		
+{
+ 	
+/*
+	This function Get joomla,jomsocial,CB Field Names Array
+	For Joomla Pass $code=0,
+	For jomsocial Pass $code=1,
+	For CB Pass $code=2,
+*/
+	public function getFieldNames($code){
+		$fieldnames='';
+		if($code==0)
+		{
+			$fieldnames0=comprofileimportHelper::getFieldNames_joomla();
+			return $fieldnames0;
+		}
+			
+		if($code==1)
+		{
+			$fieldnames1=comprofileimportHelper::getFieldNames_js();
+			return $fieldnames1;
+			
+			
+		}	
+		if($code==2)
+		{
+			$fieldnames2=comprofileimportHelper::getFieldNames_cb();
+			return $fieldnames2;
+		}
 	}
 
-	
+	public function getFieldNames_joomla()
+	{
 
+	}
+	
+	public function getFieldNames_js()
+	{
+		
+		$db = JFactory::getDBO();
+
+		// Get the user groups from the database.
+		$db->setQuery(
+			"SELECT fieldcode " .
+			" FROM #__community_fields WHERE fieldcode<>''"
+		);
+		$options = $db->loadResultArray();
+		return $options;
+	}
+	
+	function getFieldNames_cb()
+	{
+			$db = JFactory::getDBO();
+
+		// Get the user groups from the database.
+		$db->setQuery(
+			"SELECT name " .
+			" FROM #__comprofiler_fields WHERE `table`='#__comprofiler'"
+		);
+		$options = $db->loadResultArray();
+		return $options;
+	}
 
 }
 //this class is used to make log for f/l/t controllers 
@@ -191,4 +245,6 @@ class techjoomlaHelperLogs
 }  
 }	
 }
+
+
 ?>
