@@ -95,6 +95,41 @@ else
 	
 			</td>
 		</tr>	
+		
+		
+		<?php 
+						$pftitle='';
+						$pfdesc='';
+						if($profileimport_config['pi_title_frontend'])
+						$pftitle=$profileimport_config['pi_title_frontend'];
+						if($profileimport_config['pi_details_frontend'])
+						$pfdesc=$profileimport_config['pi_details_frontend'];
+						if(trim($pftitle)=='') $pftitle=JText::_('PI_SETT');
+						if(trim($pfdesc)=='')		$pfdesc=JText::_('SELECT_API_DES');
+		?>
+		
+		<tr>
+			
+			<?php
+					
+			?>
+				<td  width="25%"><?php echo JHTML::tooltip(JText::_('PF_TITLE_DESC'), JText::_('PF_TITLE'), '', JText::_('PF_TITLE'));?></td>
+				<td class="setting-td">
+					<textarea rows="3" cols="20" name="data[pi_title_frontend]"><?php echo $pftitle ?></textarea>
+				</td>
+		</tr>		
+		
+		<tr>
+			
+			<?php
+					
+			?>
+				<td  width="25%"><?php echo JHTML::tooltip(JText::_('PF_DETAILS_DESC'), JText::_('PF_DETAILS'), '', JText::_('PF_DETAILS'));?></td>
+				<td class="setting-td">
+					<textarea rows="3" cols="20" name="data[pi_details_frontend]"><?php echo $pfdesc ?></textarea>
+				</td>
+		</tr>		
+		
 	</table>
 	
 <?php			
