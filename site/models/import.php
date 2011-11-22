@@ -67,6 +67,9 @@ class profileimportModelimport extends JModel
 	function importProfile()
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components/com_profileimport/config/config.php');
+		jimport('joomla.html.html');
+		jimport( 'joomla.plugin.helper' );
+		jimport( 'joomla.form' );
 		
 		$integr_with	=	$profileimport_config['reg_direct'];		
 		$session		 	= JFactory::getSession();
@@ -75,6 +78,10 @@ class profileimportModelimport extends JModel
 		$pluginName		=	$session->get('api_used');
 		$dispatcher 	=	&JDispatcher::getInstance();
 		
+		$JS_updatedfield=array();
+		$session->set('JS_updatedfield', $JS_updatedfield);
+		$CB_updatedfield=array();
+		$session->set('CB_updatedfield', $CB_updatedfield);
 		
 		// include the Helper class of plugin
 		
@@ -82,31 +89,71 @@ class profileimportModelimport extends JModel
 			require_once(JPATH_SITE.DS.'plugins'.DS.'techjoomlaAPI'.DS.$pluginName.DS.$pluginName.DS.'helper'.DS.'helper.php');
 		else
 			require_once(JPATH_SITE.DS.'plugins'.DS.'techjoomlaAPI'.DS.$pluginName.DS.'helper'.DS.'helper.php');
-		
+
 		//call to function from plugin helper file and get Raw data	
+		$plugin =JPluginHelper::importPlugin('techjoomlaAPI',$pluginName);
+		if(JVERSION>=1.6)
+			{
+				$plugin = JPluginHelper::getPlugin('techjoomlaAPI', $plugin);
+				$pluginParams = new JRegistry();    
+				$pluginParams->loadString($plugin->params);
+
+
+			}
+			else
+			{
+				$plugin = &JPluginHelper::getPlugin('techjoomlaAPI', $plugin);
+				$pluginParams = new JParameter($plugin->params);				
+			}
+				
+		if($integr_with==0)
+		$mapping_field = $pluginParams->get('mapping_field_0'); 
+		if($integr_with==1)
+		$mapping_field = $pluginParams->get('mapping_field_1'); 
+		if($integr_with==2)
+		$mapping_field = $pluginParams->get('mapping_field_2'); 
 		
-		JPluginHelper::importPlugin('techjoomlaAPI',$pluginName);
-		$profileDetails 		=	$dispatcher->trigger($session->get('api_used').'get_profile',array($integr_with,$client,$callback));
 		
-		//call to function from plugin helper file and get Rendered Array	
+		$profileDetails =	$dispatcher->trigger($session->get('api_used').'get_profile',array($integr_with,$client,$callback));
+		$pfdataimport['profiledata']	=$profileDetails[0]['profileData'];
+		$pfdataimport['mapping_field']=$mapping_field;
+		
+		//call to function from plugin helper file and get Rendered Array	Of Api fields and their values
 		
 		$pluginHelperClassName		=	$pluginName.'Helper';
 		$pluginHelper 						= new $pluginHelperClassName;
 		$profilefunction					=	$pluginName.'Render_profile';		
-		$profileData							=	call_user_func(array($pluginHelper, $profilefunction ),$profileDetails[0]['profileData']);
+		$profileData							=	call_user_func(array($pluginHelper, $profilefunction ),$pfdataimport);
 		$mapData									=	$profileDetails[0]['mapData'];
 		if(!empty($profileDetails[0]['profileData']))
 		{
 			$return=$this->importProfileRenderData($profileData,$mapData,$integr_with);
 		}
-		return $return;
+		if($integr_with==0)
+		$updatedfield=$session->get('Joomla_updatedfield');
+		else if($integr_with==1)
+		$updatedfield=$session->get('JS_updatedfield');
+		else if($integr_with==2)
+		$updatedfield=$session->get('CB_updatedfield');
+		if($return)
+		{		
+			$returndata['profilefields']=$updatedfield;
+			$returndata['return']=1;
+			$returndata['integr_with']=$integr_with;
+			return $returndata;
+		}
+		else
+		{
+			$returndata['return']=0;
+			return $returndata;
+		}
 	}
 	
 	function importProfileRenderData($profileData,$mapData,$integr_with)
 	{
 			$db 			= JFactory::getDBO();
 			$user			= JFactory::getUser();
-			
+			$session = JFactory::getSession();	
 			$userid=$user->id;
 			if($integr_with=='0')
 				$lines		= $mapData['0']; 
@@ -155,6 +202,7 @@ class profileimportModelimport extends JModel
 
 			} //foreach
 			
+			
 		return $return;
 			
 			
@@ -167,6 +215,7 @@ class profileimportModelimport extends JModel
 		
 	function importProfile_JS($profileData,$mapData,$db,$userid,$maparr,$pfData)
 	{
+		$session = JFactory::getSession();	
 		$jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
 		if(JFolder::exists($jspath))
 		include_once($jspath.DS.'libraries'.DS.'core.php');
@@ -178,6 +227,13 @@ class profileimportModelimport extends JModel
 		$fieldid = $db->loadResult();
 		if($fieldid) {
 			$return=$jomsocial->updateUserData(trim($maparr[0]),$userid,$pfData);	
+			if($return)		
+			{
+				$JS_updatedfield =$session->get('JS_updatedfield');				
+				$JS_updatedfield[]=$maparr[0];				
+				$session->set('JS_updatedfield', $JS_updatedfield);
+			}
+
 			return 1;			
 		}	
 		
@@ -188,7 +244,7 @@ class profileimportModelimport extends JModel
 			$query = "SELECT name FROM #__comprofiler_fields WHERE name=".$db->Quote($maparr[0]);	
 			$db->setQuery($query);
 			$fieldname = $db->loadResult();
-			
+			$session = JFactory::getSession();	
 			if($fieldname) {	
 				if($fieldname=='avatar')
 				{
@@ -197,7 +253,15 @@ class profileimportModelimport extends JModel
 
 				$query = "UPDATE #__comprofiler SET `".$fieldname."`= '$pfData' WHERE  user_id = $userid ";
 				$db->setQuery($query);
-				$db->query();				
+				$result=$db->query();	
+				
+				if($return)		
+				{
+					$CB_updatedfield =$session->get('CB_updatedfield');				
+					$CB_updatedfield[]=$fieldname;				
+					$session->set('CB_updatedfield', $CB_updatedfield);
+				}
+				
 				return 1;
 			}	
 	}
@@ -226,8 +290,7 @@ class profileimportModelimport extends JModel
 	function imageUploadCB($pfData,$userid)
 	{
 			jimport( 'joomla.filesystem.folder' );
-			jimport('joomla.filesystem.file');			
-			
+			jimport('joomla.filesystem.file');
 			$handle = fopen($pfData, "r");
 			$contents = stream_get_contents($handle);
 			$destination = JPATH_SITE .DS.'images'.DS.'comprofiler'.DS.'gallery'.DS ;
