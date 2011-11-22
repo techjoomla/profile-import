@@ -52,11 +52,34 @@ class profileimportControllerimport extends JController
 		$api_used =JRequest::getVar('api');
 		$model = $this->getModel('import');
 		$return=$model->importProfile($api_used);
+		
 		$itemid=$session->get("PFI_itemid",'');
-		if($return)
-		$msg=JText::_("PF_IMPORT_SUCCESS");
+		if($return['return']==1)
+		{
+			$integr_with=$return['integr_with'];
+			if($integr_with==0)
+				$integr_nm=JText::_("PF_INT_JOOMLA");
+			else if($integr_with==1)
+				$integr_nm=JText::_("PF_INT_JS");
+			else if($integr_with==2)
+				$integr_nm=JText::_("PF_INT_CB");
+				
+				$updated_data='';
+				if($return['profilefields'])
+				{
+					$updated_data=sprintf(JText::_("PF_UPDATED_INFO"),implode(',',$return['profilefields']),$integr_nm);
+					$msg=JText::_("PF_IMPORT_SUCCESS").$updated_data;
+				}
+				else
+				{
+					$updated_data=JText::_("PF_UPDATED_INFO_FAIL");
+					$msg=JText::_("PF_IMPORT_FAIL_S").$updated_data;
+				}
+					
+		}
+		
 		else
-		$msg=JText::_("PF_IMPORT_FAIL");
+			$msg=JText::_("PF_IMPORT_FAIL");
 		$mainframe->redirect( JRoute::_(JURI::base().'index.php?option=com_profileimport&view=import&itemid='.$itemid), $msg);
 	}
 } //class
