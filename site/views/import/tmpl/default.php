@@ -7,7 +7,7 @@ require(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_profileimport'.DS.
 
 $document = &JFactory::getDocument();
 
-
+$document->addStyleSheet(JURI::base().'components/com_profileimport/css/profileimport.css'); 	
 $session =& JFactory::getSession();
 
 $itemid = JRequest::getVar('Itemid', '','GET');
@@ -22,10 +22,52 @@ if(!$user->id){
 	echo JText::_('PI_LOGIN');
 	return false;
 }
+
+if($profileimport_config['pi_title_frontend'])
+$pftitle=$profileimport_config['pi_title_frontend'];
+if($profileimport_config['pi_details_frontend'])
+$pfdesc=$profileimport_config['pi_details_frontend'];
+if(trim($pftitle)=='') 	$pftitle=JText::_('PI_SETT');
+if(trim($pfdesc)=='')		$pfdesc=JText::_('SELECT_API_DES');
+?>
+<script>
+function prosubmit(formname)
+{
+	
+	conf=confirm('<?php echo JText::_('PF_SURE_TO_IMPORT'); ?>');
+	console.log(formname);
+	formnamestr=formname.toString();
+	if(conf==true)
+	document.forms[formnamestr].submit();
+	else
+	return;
+}
+</script>
+<?php
+
+		//newly added for JS toolbar inclusion
+		if(JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+		{					
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'toolbar.php');		
+			$toolbar    =& CFactory::getToolbar();	
+			$tool = CToolbarLibrary::getInstance();
+			
+			?>
+			<style>
+			<!--
+				#proimport-wrap ul { margin: 0;padding: 0;}
+			-->
+			</style>
+			<div id="proimport-wrap">
+				<?php
+				echo $tool->getHTML();
+		}
+		//eoc for JS toolbar inclusion			
+
 ?>
 
 <h1 class="contentheading">											
-		 <?php echo JText::_('PI_SETT');?>
+		 <?php echo $pftitle;?>
 </h1>
 <?php
 $apidata=$this->apidata;
@@ -43,7 +85,8 @@ for($i=0; $i<count($apidata); $i++)
 	{
 		$getTokenURL = JRoute::_("index.php?option=com_profileimport&controller=import&task=getRequestToken&api=".$apidata[$i]['api_used']);
 ?>
-		
+		<div class="api_title"><?php echo $pfdesc;?></div>
+		<div style="clear:both"></div>
 				<?php 
 						 if(!empty($apidata))
 						{
@@ -64,9 +107,9 @@ for($i=0; $i<count($apidata); $i++)
 											<?php $form_name=$result[$i]['name'].'_connect_form';?>
 											
 												
-													<div id="<?php echo 'api_'.$api_cnt.'div'?>"  >
+													<div    class="form_api" id="<?php echo 'api_'.$api_cnt.'div'?>" >
 														<form name="<?php echo $form_name ?>" id="<?php echo $form_name ?>" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
-																 <?php echo JText::_('CLICK_API_IMG');?><a href="javascript:document.<?php echo $form_name ?>.submit();"><img height="50" width="50" src="<?php echo $img_path.$result[$i]['img_file_name'] ?>" /></a>
+																 <div onclick="prosubmit('<?php echo $form_name ?>');"><img height="50" width="50" src="<?php echo $img_path.$result[$i]['img_file_name'] ?>" /></div>
 																	<input type="hidden" name="option" value="com_profileimport"/>
 																	<input type="hidden" name="controller" value="import"/>
 																	<input type="hidden" name="task" value="get_request_token"/>
@@ -74,7 +117,7 @@ for($i=0; $i<count($apidata); $i++)
 																	
 														</form>
 													</div>
-												<div style="clear:both"></div>
+											
 
 										
 										
@@ -86,7 +129,7 @@ for($i=0; $i<count($apidata); $i++)
 							
 							<?php
 						}//end for each?>
-					
+
 
 <?php 
 		}
@@ -96,3 +139,13 @@ for($i=0; $i<count($apidata); $i++)
 </li>
 					</ul>
 				</div>
+<!-- newly added for JS toolbar inclusion  -->	
+<?php
+if(JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+{ 
+?>	
+	</div>	<!-- end of proimport-wrap div -->
+<?php
+} 
+?>	
+<!-- eoc for JS toolbar inclusion	 -->

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 	<view title="Profile Import" >
-		<message><![CDATA[Config for saving user preferences]]></message>	
+		<message><![CDATA[Import your Profile From Social Network]]></message>	
 		<options var="task">
  			<default name="Profile Import" msg="Profile Import To Jomsocial" />
 		</options>
 	</view>	
 	<state>
 		<name>Profile Import</name>
-		<description>Config for saving user preferences</description>	 
+		<description>Import your Profile From Social Network</description>	 
 	</state>
 </metadata>
 
