@@ -18,32 +18,29 @@
 		<folder>plug_techjoomlaAPI_linkedin</folder>
 	</files>
 	<languages folder="language"> 
-			<language tag="en-GB">en-GB/en-GB.plg_techjoomlaAPI_plug_techjoomlaAPI_linkedin.ini</language>
-			<language tag="pt-BR">pt-BR/pt-BR.plg_techjoomlaAPI_plug_techjoomlaAPI_linkedin.ini</language>
-			<language tag="zh-TW">zh-TW/zh-TW.plg_techjoomlaAPI_plug_techjoomlaAPI_linkedin.ini</language>	
+			<language tag="/en-GB">/en-GB/en-GB.plug_techjoomlaAPI_linkedin.ini</language>
 	</languages>
 	<!-- parameters for Joomla 1.5.x -->
 	<params addpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_linkedin/element/pathapi">
-		<param name="path_api_linkedin" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />	
 		<param name="appKey" type="text" default="" label="Enter LinkedIn application key" description="Enter LinkedIn application key" />
 		<param name="appSecret" type="text" default="" label="Enter LinkedIn secret key" description="Enter LinkedIn secret key" />
 		<param name="no_allowed_message" type="text" default="10" label="Limit to send messages[For Invitex]" description="Enter no of allowed messages" />	
 		<param name="log_file_path" type="hidden" default="" label="Log File Path" description="Enter the Path of Folder where Log files will stored" />		
 		<param name="broadcast_limit" type="text" default="5" label="Limit for status update[For Broadcast]" description="Enter the Limit for no of statuses to get" />								
-		<param name="throttle_limit_linkedin_send_message" type="text" default="10" readonly="true" label="Throttle Limit of linkedin API" description="This is Throttle Limit For send Message per day per application" />	
+		<param name="pathapi_linkedin" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />	
+		<param name="throttle_limit_linkedin_send_message" type="text" default="10" readonly="true" label="Throttle Limit of linkedin API" description="This is Throttle Limit For send Message per day per application" />		
 	</params>
-	
 	<params group="legacy" addpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_linkedin/element/mappingfields" label="Profile Import">
-		<param name="mapping_field_0" type="mappingfields" rows="8" cols="20" label="Mapping Field For Joomla[For ProfileImport]" description="Mapping Field For Linkedin to Joomla" />
-		<param name="mapping_field_1" type="mappingfields" rows="8" cols="20" label="Mapping Field For JomSocial[For ProfileImport]" description="Mapping Field For Linkedin to JomSocial" />			
-		<param name="mapping_field_2" type="mappingfields" rows="8" cols="20" label="Mapping Field For Community Builder[For ProfileImport]" description="Mapping Field For Linkedin to Community Builder" />
+		<param name="pathapi_linkedin_docs" type="mappingfields" label="Read docs For Profile Import Fields" description="Read documentation Here" />			
+		<!--<param name="mapping_field_0" type="mappingfields" rows="8" cols="50" label="Mapping Field For Joomla[For ProfileImport]" description="Enter Joomla fields on left hand side of '=' and Linkedin fields on right hand side of '='.Note that every mapping field is seperated by newline." />-->
+		<param name="mapping_field_1" type="mappingfields" rows="8" cols="50" label="Mapping Field For JomSocial[For ProfileImport]" description="Enter Jomsocial fields on left hand side of '=' and Linkedin fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+		<param name="mapping_field_2" type="mappingfields" rows="8" cols="50" label="Mapping Field For Community Builder[For ProfileImport]" description="Enter Community Builder fields on left hand side of '=' and Linkedin fields on right hand side of '='.Note that every mapping field is seperated by newline." />
 	</params>
-	
 	<!-- Fields for Joomla 1.6.x and onwards -->
 	<config name="params">
-		<fields name="params" >
-			<fieldset name="pathapi"  addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_linkedin/plug_techjoomlaAPI_linkedin/element/pathapi" label="Plugin Parameters">
-				<field name="pathapi_linkedin" class="inputbox" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />			
+  	<fields name="params">
+    	<fieldset name="basic" label="Plugin Parameters" addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_linkedin/plug_techjoomlaAPI_linkedin/element/pathapi">
+				<field name="pathapi_linkedin" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />	
 				<field name="appKey" type="text" default="" label="Enter LinkedIn application key" description="Enter LinkedIn application key"/>
 				<field name="appSecret" type="text" default="" label="Enter LinkedIn secret key" description="Enter LinkedIn secret key" />
 				<field name="no_allowed_message" type="text" default="10" label="Limit to send messages[For Invitex]" description="Enter no of allowed messages"/>	
@@ -51,16 +48,14 @@
 				<field name="broadcast_limit" type="text" default="5" label="Limit for status update[For Broadcast]" description="Enter the Limit for no of statuses to get" />						
 				<field name="throttle_limit_linkedin_send_message" type="text" default="10" readonly="true" label="Throttle Limit of linkedin API" description="This is Throttle Limit For send Message per day per application" />		
 			</fieldset>
-
 			<fieldset name="mappingfields"  addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_linkedin/plug_techjoomlaAPI_linkedin/element/mappingfields" label="Profile Import Parameters">
-				<field name="mapping_field_0" class="inputbox" type="mappingfields"  rows="8" cols="20" label="Mapping Field For Joomla[For ProfileImport]" description="Mapping Field For Linkedin to Joomla" />
-				<field name="mapping_field_1" class="inputbox" type="mappingfields"  rows="8" cols="20" label="Mapping Field For JomSocial[For ProfileImport]" description="Mapping Field For Linkedin to JomSocial" />			
-				<field name="mapping_field_2" class="inputbox" type="mappingfields" rows="8" cols="20"	label="Mapping Field For Community Builder[For ProfileImport]" description="Mapping Field For Linkedin to Community Builder" />
-			</fieldset>
+				<field name="pathapi_linkedin_docs" class="inputbox" type="mappingfields" label="Read docs For Profile Import Fields" description="Read documentation Here" />			
+				<!--<field name="mapping_field_0" class="inputbox" type="mappingfields"  rows="8" cols="50" label="Mapping Fields For Joomla" description="Enter Joomla fields on left hand side of '=' and Linkedin fields on right hand side of '='.Note that every mapping field is seperated by newline." />-->
+				<field name="mapping_field_1" class="inputbox" type="mappingfields"  rows="8" cols="50" label="Mapping Fields For JomSocial" description="Enter Jomsocial fields on left hand side of '=' and Linkedin fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+				<field name="mapping_field_2" class="inputbox" type="mappingfields" rows="8" cols="50"	label="Mapping Fields For Community Builder" description="Enter Community Builder fields on left hand side of '=' and Linkedin fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+			</fieldset>			
+			
 		</fields>
-		
-	
-
 	</config>
 
 </install>

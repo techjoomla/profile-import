@@ -50,7 +50,11 @@
 					$rows		= $this->element['rows'] ? ' rows="'.(int) $this->element['rows'].'"' : '';
 					$onchange	= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 					
-					
+					if($this->id=='jform_params_pathapi_googleplus_docs')
+				{
+						
+						return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+				}
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
 							if($firstinstall)
@@ -68,6 +72,12 @@
 					}
 					
 					if($this->id=='jform_params_mapping_field_1'){	//jomsocial
+						
+						if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+						{ 
+							return JText::_('JS_NOT_INSTALLED');
+						}
+						
 						if($firstinstall)
 							$fieldvalue=htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 							else
@@ -83,6 +93,10 @@
 					}
 		
 					if($this->id=='jform_params_mapping_field_2'){	//CB
+					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+						{ 
+							return JText::_('CB_NOT_INSTALLED');
+						}
 						if($firstinstall)
 							$fieldvalue=htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 							else
@@ -118,6 +132,16 @@
 			$FieldValue		=new FieldValueGoogleplus();			
 			$firstinstall	=$FieldValue->checkfirstinstall();
 			
+			if($name=='pathapi_googleplus_docs')
+			{
+					return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+			}
+				
+			if($this->id=='jform_params_pathapi_googleplus_docs')
+					{
+							
+							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+					}
 				if($name=='mapping_field_0'){ 	//joomla
 									
 					if($firstinstall)
@@ -135,6 +159,10 @@
 				}
 				
 				if($name=='mapping_field_1'){	//jomsocial
+					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+						{ 
+							return JText::_('JS_NOT_INSTALLED');
+						}
 					if($firstinstall)
 						$fieldvalue=$value;
 					else
@@ -150,7 +178,11 @@
 				}
 		
 				if($name=='mapping_field_2'){	//CB
-				
+					
+					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+						{ 
+							return JText::_('CB_NOT_INSTALLED');
+						}
 					if($firstinstall)
 						$fieldvalue=$value;
 					else
@@ -239,25 +271,37 @@
 		public function RenderField_js($fieldnamejs)
 		{
 			$defaultvalue='';
+			$gpfields=array('organizations','displayName','aboutMe','name','birthday','gender','email','work','currentLocation','relationshipStatus','picture-url');
 			foreach($fieldnamejs as $key=>$value)
 			{
+				
 				if($value=='FIELD_ABOUTME')
-				$defaultvalue.=$value.'=summary'."\n";
-				
-				
-				if($value=='FIELD_ADDRESS')
-				$defaultvalue.=$value.'=address'."\n";
+				$defaultvalue.=$value.'=aboutMe'."\n";
 				
 				if($value=='FIELD_GENDER')
 				$defaultvalue.=$value.'=gender'."\n";
 				
+				if($value=='FIELD_ADDRESS')
+				$defaultvalue.=$value.'=currentLocation'."\n";
+				
+				if($value=='FIELD_BIRTHDATE')
+				$defaultvalue.=$value.'=birthday'."\n";
+				
 				
 				if($value=='FIELD_COLLEGE')
-				$defaultvalue.=$value.'=education'."\n";
+				$defaultvalue.=$value.'=organizations'."\n";
+				
+				if($value=='FIELD_COUNTRY')
+				$defaultvalue.=$value.'=country'."\n";
+				
+				
+				if($value=='FIELD_GRADUATION')
+				$defaultvalue.=$value.'=graduation'."\n";
 				
 				if($value=='FIELD_MOBILE')
-				$defaultvalue.=$value.'=phone-number'."\n";;
+				$defaultvalue.=$value.'=phone-number'."\n";
 							
+
 
 				
 				}
@@ -275,10 +319,13 @@
 				
 				
 				if($value=='firstname')
-				$defaultvalue.=$value.'=name'."\n";
-				
+				$defaultvalue.=$value.'=firstname'."\n";				
+				if($value=='lastname')
+				$defaultvalue.=$value.'=lastname'."\n";
+				if($value=='middlename')	 
+				$defaultvalue.=$value.'=middlename'."\n";
 				if($value=='avatar')
-				$defaultvalue.=$value.'=image'."\n";
+				$defaultvalue.=$value.'=picture-url'."\n";
 				
 				}
 				return $defaultvalue;

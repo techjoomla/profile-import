@@ -51,7 +51,11 @@
 					$rows		= $this->element['rows'] ? ' rows="'.(int) $this->element['rows'].'"' : '';
 					$onchange	= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 					
-					
+					if($this->id=='jform_params_pathapi_twitter_docs')
+					{
+							
+							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+					}
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
 							if($firstinstall)
@@ -69,6 +73,10 @@
 					}
 					
 					if($this->id=='jform_params_mapping_field_1'){	//jomsocial
+						if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+						{ 
+							return JText::_('JS_NOT_INSTALLED');
+						}
 						if($firstinstall)
 							$fieldvalue=htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 							else
@@ -84,6 +92,10 @@
 					}
 		
 					if($this->id=='jform_params_mapping_field_2'){	//CB
+					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+						{ 
+							return JText::_('CB_NOT_INSTALLED');
+						}
 						if($firstinstall)
 							$fieldvalue=htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 							else
@@ -123,6 +135,11 @@
 			$FieldValue		=new FieldValueTwitter();			
 			$firstinstall	=$FieldValue->checkfirstinstall();
 			
+				if($name=='pathapi_twitter_docs')
+				{
+						return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+				}
+				
 				if($name=='mapping_field_0'){ 	//joomla
 									
 					if($firstinstall)
@@ -140,6 +157,10 @@
 				}
 				
 				if($name=='mapping_field_1'){	//jomsocial
+					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+						{ 
+							return JText::_('JS_NOT_INSTALLED');
+						}
 					if($firstinstall)
 						$fieldvalue=$value;
 					else
@@ -155,6 +176,10 @@
 				}
 		
 				if($name=='mapping_field_2'){	//CB
+				if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+						{ 
+							return JText::_('CB_NOT_INSTALLED');
+						}
 				
 					if($firstinstall)
 						$fieldvalue=$value;

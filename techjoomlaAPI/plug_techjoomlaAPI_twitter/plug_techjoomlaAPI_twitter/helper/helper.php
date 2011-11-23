@@ -7,6 +7,7 @@ class plug_techjoomlaAPI_twitterHelper
 	function plug_techjoomlaAPI_twitterRender_profile($profileData)
   {
   	$data = $profileData;
+ 	
   	$r_profileData=array();
 		if(isset($data['name']))
 		$r_profileData['name'] 	=	$data['name'];

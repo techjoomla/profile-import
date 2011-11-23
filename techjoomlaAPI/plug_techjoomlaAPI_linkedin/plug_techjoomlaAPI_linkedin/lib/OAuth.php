@@ -6,7 +6,7 @@
 //class OAuthException extends Exception {
   // pass
 //}
-if (!class_exists('OAuthSignatureMethod_HMAC_SHA1'))
+if (!class_exists('OAuthConsumer'))
  {
 class OAuthConsumer {
   public $key;
@@ -167,7 +167,7 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod {
  * specification.
  *   - Chapter 9.3 ("RSA-SHA1")
  */
- if (!class_exists('OAuthSignatureMethod_PLAINTEXT'))
+ if (!class_exists('OAuthSignatureMethod_RSA_SHA1'))
  {
 abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
   public function get_name() {

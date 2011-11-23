@@ -10,68 +10,80 @@ class plug_techjoomlaAPI_linkedinHelper
   	require_once(JPATH_COMPONENT.DS.'helper.php');
   	
   	$prfdata=techjoomlaHelperLogs::xml2array($profileData['linkedin']);
-  	$data = $prfdata['person'];
- 		
- 		
+  	$data = $prfdata['person']; 
+  	
 		$r_profileData=array();
-		$r_profileData['first-name'] 	=	$data['first-name'];
-		$r_profileData['last-name'] 	=	$data['last-name'];
-		$r_profileData['name'] 				=	$data['first-name'].' '.$data['last-name'];
 		
-		if(array_key_exists('picture-url',$data))
-		{
-			$r_profileData['image']	=	$data['picture-url'];
-		}
-		else
-		{
-			$r_profileData['image']	=	'';
-		}
+		$linkfields=array('first-name','last-name','picture-url','summary','gender','location','educations','phone-numbers','main-address','current-status');
 		
-		if(isset($data['summary']))
-		$r_profileData['summary'] =	$data['summary'];
-		if(isset($data['location']['name']))
-		$r_profileData['location']=	$data['location']['name'];
-		
-		if(count($data['educations']['education'])>1)
-		$r_profileData['education']		=$data['educations']['education']['0']['degree'];
-		
-		if(count($data['educations']['education'])==1)
-			$r_profileData['education']		=$data['educations']['education']['degree'];
-		
-		
-		if(count($data['phone-numbers']['phone-number']['phone-number'])>1)
-		$r_profileData['phone-number']		=$data['phone-numbers']['phone-number']['0']['phone-number'];
-		
-		if(count($data['phone-numbers']['phone-number'])==1)
-		$r_profileData['phone-number']		=$data['phone-numbers']['phone-number']['phone-number'];
-		
-		
-		if($data['main-address'])
-		$r_profileData['address']=$data['main-address'];
 		if(isset($data['date-of-birth']))
 		{
-		if($data['date-of-birth']['month']<10)
-		$data['date-of-birth']['month']='0'.$data['date-of-birth']['month'];		
-		if($data['date-of-birth']['day']<10)
-		$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
+			if($data['date-of-birth']['month']<10)
+			$data['date-of-birth']['month']='0'.$data['date-of-birth']['month'];		
+			if($data['date-of-birth']['day']<10)
+			$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
 			
-		$r_profileData['birthdate']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
+			$r_profileData['date-of-birth']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
 		}
-		if($data['current-status'])
-		$r_profileData['current-status']=	$data['current-status'];
-
+		
 		if($data['location']['country']['code'])
 		{
 		$r_profileData['country']=	$this->country_code_to_country(strtoupper($data['location']['country']['code']));
 		
 		}
 		
+		foreach($linkfields as $key=>$arrkey)
+		{
+
+			if(is_array($profileData[$arrkey]))
+			{
+				
+				$currentval=$this->populatearray($profileData[$arrkey]);				
+				$r_profileData[$arrkey]=$currentval;
+			}
+			else
+			{
+			
+				if($arrkey=="gender")
+				$r_profileData[$arrkey]=ucwords($profileData[$arrkey]);
+				else								
+				$r_profileData[$arrkey]=$profileData[$arrkey];
+				
+			
+			}
 		
+		}
 		
+		//print_r($r_profileData);die;
 		return $r_profileData;
   
   }
   
+  public function populatearray($profileData1)			
+	{
+
+			$count=0;						
+		  foreach ($profileData1 as $key=>$value)
+		  {
+		 
+				  	if(is_array($value))
+				    {
+								
+				    		$returnval=$this->populatearray($value);
+				        if($returnval)
+				           return $returnval;
+				    }
+				    else if($key=='name')
+				    {
+								return $value;
+				    }
+		     
+		      
+		  }
+
+		 
+	}
+	
 	function country_code_to_country( $code ){
     $country = '';
     if( $code == 'AF' ) $country = 'Afghanistan';

@@ -34,9 +34,10 @@
 	</params>
 	
 	<params group="legacy" addpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_twitter/element/mappingfields" label="Profile Import">
-		<param name="mapping_field_0" type="mappingfields" rows="8" cols="20" label="Mapping Field For Joomla[For ProfileImport]" description="Mapping Field For Twitter to Joomla" />
-		<param name="mapping_field_1" type="mappingfields" rows="8" cols="20" label="Mapping Field For JomSocial[For ProfileImport]" description="Mapping Field For Twitter to JomSocial" />			
-		<param name="mapping_field_2" type="mappingfields" rows="8" cols="20" label="Mapping Field For Community Builder[For ProfileImport]" description="Mapping Field For Twitter to Community Builder" />
+		<param name="pathapi_twitter_docs" type="mappingfields" label="Read docs For Profile Import Fields" description="Read documentation Here" />			
+		<!--<param name="mapping_field_0" type="mappingfields" rows="8" cols="50" label="Mapping Field For Joomla[For ProfileImport]" description="Enter Joomla fields on left hand side of '=' and Twitter fields on right hand side of '='.Note that every mapping field is seperated by newline." />-->
+		<param name="mapping_field_1" type="mappingfields" rows="8" cols="50" label="Mapping Field For JomSocial[For ProfileImport]" description="Enter Jomsocial fields on left hand side of '=' and Twitter fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+		<param name="mapping_field_2" type="mappingfields" rows="8" cols="50" label="Mapping Field For Community Builder[For ProfileImport]" description="Enter Community Builder fields on left hand side of '=' and Twitter fields on right hand side of '='.Note that every mapping field is seperated by newline." />
 	</params>
 	
 	<!-- Fields for Joomla 1.6.x and onwards -->
@@ -53,10 +54,13 @@
 			</fieldset>
 			
 			<fieldset name="mappingfields"  addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_twitter/plug_techjoomlaAPI_twitter/element/mappingfields" label="Profile Import Parameters">
-				<field name="mapping_field_0" class="inputbox" type="mappingfields"  rows="8" cols="20" label="Mapping Field For Joomla[For ProfileImport]" description="Mapping Field For Twitter to Joomla" />
-				<field name="mapping_field_1" class="inputbox" type="mappingfields"  rows="8" cols="20" label="Mapping Field For JomSocial[For ProfileImport]" description="Mapping Field For Twitter to JomSocial" />			
-				<field name="mapping_field_2" class="inputbox" type="mappingfields" rows="8" cols="20"	label="Mapping Field For Community Builder[For ProfileImport]" description="Mapping Field For Twitter to Community Builder" />
+				<field name="pathapi_twitter_docs" class="inputbox" type="mappingfields" label="Read docs For Profile Import Fields" description="Read documentation Here" />			
+				<!--<field name="mapping_field_0" class="inputbox" type="mappingfields"  rows="8" cols="50" label="Mapping Fields For Joomla" description="Enter Joomla fields on left hand side of '=' and Twitter fields on right hand side of '='.Note that every mapping field is seperated by newline." />-->
+				<field name="mapping_field_1" class="inputbox" type="mappingfields"  rows="8" cols="50" label="Mapping Fields For JomSocial" description="Enter Jomsocial fields on left hand side of '=' and Twitter fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+				<field name="mapping_field_2" class="inputbox" type="mappingfields" rows="8" cols="50"	label="Mapping Fields For Community Builder" description="Enter Community Builder fields on left hand side of '=' and Twitter fields on right hand side of '='.Note that every mapping field is seperated by newline." />
 			</fieldset>
+			
+			
 			
 	</fields>
 	</config>

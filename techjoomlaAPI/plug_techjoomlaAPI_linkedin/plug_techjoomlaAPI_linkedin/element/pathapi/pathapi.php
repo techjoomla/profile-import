@@ -53,6 +53,7 @@
 				var $_name = 'pathapi';
 				function fetchElement($name, $value, &$node, $control_name)
 				{
+					if($name=='pathapi_linkedin')
 					return '<a href="https://www.linkedin.com/secure/developer" target="_blank">'.JText::_('API_KEY_PATH').'</a>';
 				
 				}//function
