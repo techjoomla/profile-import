@@ -67,6 +67,7 @@ class profileimportModelimport extends JModel
 	function importProfile()
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components/com_profileimport/config/config.php');
+		require_once(JPATH_SITE.DS.'components/com_profileimport/helper.php');
 		jimport('joomla.html.html');
 		jimport( 'joomla.plugin.helper' );
 		jimport( 'joomla.form' );
@@ -114,9 +115,11 @@ class profileimportModelimport extends JModel
 		
 		
 		$profileDetails =	$dispatcher->trigger($session->get('api_used').'get_profile',array($integr_with,$client,$callback));
-		$pfdataimport['profiledata']	=$profileDetails[0]['profileData'];
-		$pfdataimport['mapping_field']=$mapping_field;
+		$mapping_fieldParams=comprofileimportHelper::RenderParamsprofileimport($mapping_field);
 		
+		$pfdataimport['profiledata']	=$profileDetails[0]['profileData'];
+		$pfdataimport['mapping_field']=$mapping_fieldParams;
+	
 		//call to function from plugin helper file and get Rendered Array	Of Api fields and their values
 		
 		$pluginHelperClassName		=	$pluginName.'Helper';
@@ -164,6 +167,7 @@ class profileimportModelimport extends JModel
 			$maptext 	= explode("\n",trim($lines));
 			
 			$js_img_upload=0;
+			
 			foreach ($profileData as $key=>$pfData) 
 			{
 				foreach ($maptext as $mapkey=>$fieldmap) 
@@ -186,9 +190,10 @@ class profileimportModelimport extends JModel
 							else
 							{
 						
-								if($key=="image" and $integr_with=='1' and $js_img_upload==0)//Jomsocial Avatar Upload
+								if(($key=="image" or $key=="picture-url" or $key=="profile_image_url") and ($integr_with=='1' and $js_img_upload==0))//Jomsocial Avatar Upload
 								{									
-									$js_img_upload=1;	
+									$js_img_upload=1;
+									
 									$this->imageUploadJS($pfData,$userid,$db);
 								}
 							

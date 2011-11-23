@@ -4,12 +4,26 @@ defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 class comprofileimportHelper
 {
  	
+
+	public function RenderParamsprofileimport($params){
+		$fbfieldsarr=explode("\n",$params);		
+		foreach($fbfieldsarr as $fbfieldskey=>$fbfieldsval)
+		{
+			$currentvalarr=array();
+			$currentvalarr=explode('=',trim($fbfieldsval));
+			if((trim($currentvalarr[1])) && isset($currentvalarr[1]))
+			$currentvalarrFinal[]=trim($currentvalarr[1]);
+		}
+		
+		return $currentvalarrFinal;
+	}
+	
 /*
 	This function Get joomla,jomsocial,CB Field Names Array
 	For Joomla Pass $code=0,
 	For jomsocial Pass $code=1,
 	For CB Pass $code=2,
-*/
+*/	
 	public function getFieldNames($code){
 		$fieldnames='';
 		if($code==0)
