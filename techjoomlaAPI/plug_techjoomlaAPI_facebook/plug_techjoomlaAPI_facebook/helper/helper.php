@@ -1,77 +1,108 @@
 <?php
 
-
+	jimport('joomla.html.html');
+	jimport( 'joomla.plugin.helper' );
 class plug_techjoomlaAPI_facebookHelper
 { 	
 	
-	function plug_techjoomlaAPI_facebookRender_profile($profileData)
+function plug_techjoomlaAPI_facebookRender_profile($profileData)
   {
+		
+		$data = $profileData['profiledata'];
   	
-  	$data = $profileData;
- 		$r_profileData=array();
-		if(isset($data['first-name']))
-		$r_profileData['first-name'] 	=	$data['first-name'];
+		$r_profileData=array();
+		$fbfieldsarr=explode("\n",$profileData['mapping_field']);
 		
-		if(isset($data['last-name']))
-		$r_profileData['last-name'] 	=	$data['last-name'];
-		
-		if(isset($data['name']))
-		$r_profileData['name'] 				=	$data['name'];
-		
-		if(isset($data['gender']))
-		$r_profileData['gender'] 				=	ucwords($data['gender']);
-		
-		if(isset($data['email']))
-		$r_profileData['email'] 				=	$data['email'];
-		
-		if(count($data['work'])>1)
-		$r_profileData['designation']=	$data['work']['0']['position']['name'];
-		
-		if(count($data['work'])==1)
-		$r_profileData['designation']=	$data['work']['position']['name'];
-		
-		if(isset($data['location']['name']))
-		$r_profileData['location']=	$data['location']['name'];
-		
-		if(isset($data['education']) and (count($data['education'])>1))
-		$r_profileData['education']		=$data['education']['0']['degree']['name'];
-		
-		if(isset($data['education']) and (count($data['education'])==1))
-			$r_profileData['education']		=$data['educations']['education']['degree'];
-		
-		
-		if(count($data['phone-numbers']['phone-number']['phone-number'])>1)
-		$r_profileData['phone-number']		=$data['phone-numbers']['phone-number']['0']['phone-number'];
-		
-		if(count($data['phone-numbers']['phone-number'])==1)
-		$r_profileData['phone-number']		=$data['phone-numbers']['phone-number']['phone-number'];
-		
-		
-		if(isset($data['main-address']))
-		$r_profileData['address']=$data['main-address'];
+		foreach($fbfieldsarr as $fbfieldskey=>$fbfieldsval)
+		{
+			
+			$currentvalarr=array();
+			$currentvalarr=explode('=',$fbfieldsval);
+			if((trim($currentvalarr[1])) && isset($currentvalarr[1]))
+			$currentvalarrFinal[]=trim($currentvalarr[1]);
+		}
+		$fbfields=$currentvalarrFinal;
+		//$fbfieldsA=array('first_name','middle_name','last_name','name','gender','email','work','location','hometown','bio','picture-url');
 		
 		if(isset($data['date-of-birth']))
 		{
 			if($data['date-of-birth']['month']<10)
 			$data['date-of-birth']['month']='0'.$data['date-of-birth']['month'];
-		
+
 			if($data['date-of-birth']['day']<10)
 			$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
-			
+
 			$r_profileData['birthdate']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
 		}
 		
-		if(isset($data['current-status']))
-		$r_profileData['current-status']=	$data['current-status'];
+		$r_profileData['education']='';
+		if(isset($data['education']))
+		{
+			foreach($data['education'] as $edukey=>$eduvalue)
+			{
+				if(isset(trim($eduvalue['degree']['name'])))
+					{
+						if(isset($r_profileData['education']))					
+							$r_profileData['education']=$r_profileData['education'].", ".$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
+						else
+						$r_profileData['education']=$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
+						$r_profileData['graduation']=$eduvalue['year']['name'];
+					}
+			
+			}
+		}
 		
-		if(isset($data['picture-url']))
-		$r_profileData['image']=$data['picture-url'];
+		foreach($currentvalarrFinal as $key=>$arrkey)
+		{
+			
+			
+			if(is_array($data[$arrkey]))
+			{
+				
+				$currentval=$this->populatearray($data[$arrkey]);				
+				$r_profileData[$arrkey]=$currentval;
+			}
+			else
+			{
+				
+				if($arrkey=="gender" )
+				$r_profileData[$arrkey]=ucwords($data[$arrkey]);
+				else								
+				$r_profileData[$arrkey]=$data[$arrkey];
+				
+			
+			}
+		
+		}
+		print_r($r_profileData);die;
 		return $r_profileData;
-  	
   	
   }
 
-	
+	public function populatearray($profileData1)			
+	{
+
+			$count=0;						
+		  foreach ($profileData1 as $key=>$value)
+		  {
+		 
+				  	if(is_array($value))
+				    {
+								
+				    		$returnval=$this->populatearray($value);
+				        if($returnval)
+				            return $returnval;
+				    }
+				    else if($key=='name')
+				    {
+								return $value;
+				    }
+		     
+		      
+		  }
+
+		 
+	}
 
 }
 

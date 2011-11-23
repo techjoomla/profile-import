@@ -50,6 +50,11 @@
 					$rows		= $this->element['rows'] ? ' rows="'.(int) $this->element['rows'].'"' : '';
 					$onchange	= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 					
+					if($this->id=='jform_params_pathapi_facebook_docs')
+					{
+							
+							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+					}
 					
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
@@ -83,6 +88,10 @@
 					}
 		
 					if($this->id=='jform_params_mapping_field_2'){	//CB
+					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+						{ 
+							return JText::_('CB_NOT_INSTALLED');
+						}
 						if($firstinstall)
 							$fieldvalue=htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 							else
@@ -118,6 +127,10 @@
 			$FieldValue		=new FieldValueFacebook();			
 			$firstinstall	=$FieldValue->checkfirstinstall();
 			
+				if($name=='pathapi_facebook_docs')
+				{
+						return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+				}
 				if($name=='mapping_field_0'){ 	//joomla
 									
 					if($firstinstall)
@@ -134,7 +147,8 @@
 				
 				}
 				
-				if($name=='mapping_field_1'){	//jomsocial
+				if($name=='mapping_field_1' ){	//jomsocial
+				
 					if($firstinstall)
 						$fieldvalue=$value;
 					else
@@ -150,6 +164,10 @@
 				}
 		
 				if($name=='mapping_field_2'){	//CB
+				if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+						{ 
+							return JText::_('CB_NOT_INSTALLED');
+						}
 				
 					if($firstinstall)
 						$fieldvalue=$value;
@@ -239,16 +257,18 @@
 		public function RenderField_js($fieldnamejs)
 		{
 			$defaultvalue='';
+			$fbfields=array('name','gender','email','work','location','education','hometown','bio','picture-url');
 			foreach($fieldnamejs as $key=>$value)
 			{
+			
 				if($value=='FIELD_ABOUTME')
-				$defaultvalue.=$value.'=designation'."\n";
+				$defaultvalue.=$value.'=bio'."\n";
 				
 				if($value=='FIELD_GENDER')
 				$defaultvalue.=$value.'=gender'."\n";
 				
 				if($value=='FIELD_ADDRESS')
-				$defaultvalue.=$value.'=address'."\n";
+				$defaultvalue.=$value.'=location'."\n";
 				
 				if($value=='FIELD_BIRTHDATE')
 				$defaultvalue.=$value.'=birthdate'."\n";
@@ -262,7 +282,7 @@
 				
 				
 				if($value=='FIELD_GRADUATION')
-				$defaultvalue.=$value.'=education'."\n";
+				$defaultvalue.=$value.'=graduation'."\n";
 				
 				if($value=='FIELD_MOBILE')
 				$defaultvalue.=$value.'=phone-number'."\n";
@@ -278,20 +298,31 @@
 		
 		public function RenderField_cb($fieldnamecb)
 		{
+		
 			$defaultvalue='';
 			foreach($fieldnamecb as $key=>$value)
 			{
 				if($value=='firstname')
-				$defaultvalue.=$value.'=first-name'."\n";
-				
+					$defaultvalue.=$value.'=first-name'."\n";				
 				if($value=='lastname')
-				$defaultvalue.=$value.'=last-name'."\n";
-				
-			
+					$defaultvalue.=$value.'=last-name'."\n";
+				if($value=='middlename')	 
+					$defaultvalue.=$value.'=middle_name'."\n";
 				if($value=='avatar')
-				$defaultvalue.=$value.'=image'."\n";
-				
-				}
+					$defaultvalue.=$value.'=picture-url'."\n";				
+				if($value=='email')
+					$defaultvalue.=$value.'=email'."\n";
+				if($value=='website')
+					$defaultvalue.=$value.'=website'."\n";
+				if($value=='city')
+					$defaultvalue.=$value.'=location'."\n";
+				if($value=='location')
+					$defaultvalue.=$value.'=hometown'."\n";
+				if($value=='occupation')
+					$defaultvalue.=$value.'=work'."\n";		
+				if($value=='interests')
+					$defaultvalue.=$value.'=quotes'."\n";
+			}
 				return $defaultvalue;
 		
 		

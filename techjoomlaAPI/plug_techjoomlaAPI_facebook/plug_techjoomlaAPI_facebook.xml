@@ -24,7 +24,7 @@
 	</languages>
 	<!-- parameters for Joomla 1.5.x -->
 	<params addpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_facebook/element/pathapi">
-		<param name="path_api_facebook" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />	
+		<param name="pathapi_facebook" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />	
 		<param name="appKey" type="text" default="" label="Enter Facebook App ID:" description="Enter Facebook App ID" />
 		<param name="appSecret" type="text" default="" label="Enter Facebook App Secret: " description="Enter Facebook App Secret: " />
 		<param name="no_allowed_message" type="text" default="10" label="Limit to send messages[For Invitex]" description="Enter no of allowed messages" />
@@ -32,31 +32,31 @@
 		<param name="broadcast_limit" type="text" default="5" label="Limit for status update[For Broadcast]" description="Enter the Limit for no of statuses to get" />								
 		<param name="throttle_limit_facebook_send_message" type="hidden" default="10" readonly="true" label="Throttle Limit of facebook API" description="This is Throttle Limit For send Message per day per application" />		
 	</params>
-	
 	<params group="legacy" addpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_facebook/element/mappingfields" label="Profile Import">
-		<param name="mapping_field_0" type="mappingfields" rows="8" cols="20" label="Mapping Field For Joomla[For ProfileImport]" description="Mapping Field For Facebook to Joomla" />
-		<param name="mapping_field_1" type="mappingfields" rows="8" cols="20" label="Mapping Field For JomSocial[For ProfileImport]" description="Mapping Field For Facebook to JomSocial" />			
-		<param name="mapping_field_2" type="mappingfields" rows="8" cols="20" label="Mapping Field For Community Builder[For ProfileImport]" description="Mapping Field For Facebook to Community Builder" />
+		<param name="pathapi_facebook_docs" type="mappingfields" label="Read docs For Profile Import Fields" description="Read documentation Here" />			
+		<!--<param name="mapping_field_0" type="mappingfields" rows="8" cols="50" label="Mapping Field For Joomla[For ProfileImport]" description="Enter Joomla fields on left hand side of '=' and Facebook fields on right hand side of '='.Note that every mapping field is seperated by newline." />-->
+		<param name="mapping_field_1" type="mappingfields" rows="8" cols="50" label="Mapping Field For JomSocial[For ProfileImport]" description="Enter Jomsocial fields on left hand side of '=' and Facebook fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+		<param name="mapping_field_2" type="mappingfields" rows="8" cols="50" label="Mapping Field For Community Builder[For ProfileImport]" description="Enter Community Builder fields on left hand side of '=' and Facebook fields on right hand side of '='.Note that every mapping field is seperated by newline." />
 	</params>
 	<!-- Fields for Joomla 1.6.x and onwards -->
 	<config name="params">
-		<fields name="params" >
-    	<fieldset name="pathapi"  addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_facebook/plug_techjoomlaAPI_facebook/element/pathapi" label="Plugin Parameters">
-				<field name="pathapi_facebook" class="inputbox" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />			
-				<field name="appKey" type="text" default="" label="Enter LinkedIn application key" description="Enter LinkedIn application key"/>
-				<field name="appSecret" type="text" default="" label="Enter LinkedIn secret key" description="Enter LinkedIn secret key" />
-				<field name="no_allowed_message" type="text" default="10" label="Limit to send messages[For Invitex]" description="Enter no of allowed messages"/>	
+  	<fields name="params">
+    	<fieldset name="basic"  label="Plugin Parameters" addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_facebook/plug_techjoomlaAPI_facebook/element/pathapi">
+				<field name="pathapi_facebook" type="pathapi" label="Get Your Keys From Here" description="Click Here to get the application key and secret" />	
+				<field name="appKey" type="text" default="" label="Enter Facebook App ID:" description="Enter Facebook App ID:"/>
+				<field name="appSecret" type="text" default="" label="Enter Facebook App Secret:" description="Enter Facebook App Secret:" />
+				<field name="no_allowed_message" type="text" default="10" label="Limit to send messages[For Invitex]" description="Enter no of allowed messages"/>
 				<field name="log_file_path" type="hidden" default="" label="Log File Path" description="Enter the Path of Folder where Log files will stored"/>		
 				<field name="broadcast_limit" type="text" default="5" label="Limit for status update[For Broadcast]" description="Enter the Limit for no of statuses to get" />						
-				<field name="throttle_limit_facebook_send_message" type="text" default="10" readonly="true" label="Throttle Limit of facebook API" description="This is Throttle Limit For send Message per day per application" />		
+				<field name="throttle_limit_facebook_send_message" type="hidden" default="10" readonly="true" label="Throttle Limit of facebook API" description="This is Throttle Limit For send Message per day per application" />		
 			</fieldset>
 			
 			<fieldset name="mappingfields"  addfieldpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_facebook/plug_techjoomlaAPI_facebook/element/mappingfields" label="Profile Import Parameters">
-				<field name="mapping_field_0" class="inputbox" type="mappingfields"  rows="8" cols="20" label="Mapping Field For Joomla[For ProfileImport]" description="Mapping Field For Facebook to Joomla" />
-				<field name="mapping_field_1" class="inputbox" type="mappingfields"  rows="8" cols="20" label="Mapping Field For JomSocial[For ProfileImport]" description="Mapping Field For Facebook to JomSocial" />			
-				<field name="mapping_field_2" class="inputbox" type="mappingfields" rows="8" cols="20"	label="Mapping Field For Community Builder[For ProfileImport]" description="Mapping Field For Facebook to Community Builder" />
-			</fieldset>
-	</fields>
+				<field name="pathapi_facebook_docs" class="inputbox" type="mappingfields" label="Read docs For Profile Import Fields" description="Read documentation Here" />			
+				<!--<field name="mapping_field_0" class="inputbox" type="mappingfields"  rows="8" cols="50" label="Mapping Fields For Joomla" description="Enter Joomla fields on left hand side of '=' and Facebook fields on right hand side of '='.Note that every mapping field is seperated by newline." />-->
+				<field name="mapping_field_1" class="inputbox" type="mappingfields"  rows="8" cols="50" label="Mapping Fields For JomSocial" description="Enter Jomsocial fields on left hand side of '=' and Facebook fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+				<field name="mapping_field_2" class="inputbox" type="mappingfields" rows="8" cols="50"	label="Mapping Fields For Community Builder" description="Enter Community Builder fields on left hand side of '=' and Facebook fields on right hand side of '='.Note that every mapping field is seperated by newline." />
+			</fieldset>			
+		</fields>
 	</config>
-
 </install>
