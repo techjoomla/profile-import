@@ -92,20 +92,19 @@ class profileimportModelimport extends JModel
 
 		//call to function from plugin helper file and get Raw data	
 		$plugin =JPluginHelper::importPlugin('techjoomlaAPI',$pluginName);
+		
 		if(JVERSION>=1.6)
 			{
-				$plugin = JPluginHelper::getPlugin('techjoomlaAPI', $plugin);
+				$plugin = JPluginHelper::getPlugin('techjoomlaAPI', $pluginName);
 				$pluginParams = new JRegistry();    
 				$pluginParams->loadString($plugin->params);
-
-
 			}
 			else
 			{
-				$plugin = &JPluginHelper::getPlugin('techjoomlaAPI', $plugin);
+				$plugin = &JPluginHelper::getPlugin('techjoomlaAPI', $pluginName);
 				$pluginParams = new JParameter($plugin->params);				
 			}
-				
+		
 		if($integr_with==0)
 		$mapping_field = $pluginParams->get('mapping_field_0'); 
 		if($integr_with==1)
