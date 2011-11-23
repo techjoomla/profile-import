@@ -6,120 +6,111 @@ class plug_techjoomlaAPI_googleplusHelper
 	
 	function plug_techjoomlaAPI_googleplusRender_profile($profileData)
 	{
-		$data = $profileData; 
-		$r_profileData=array();
-		$gpfields=array('displayName','aboutMe','birthday','gender','email','work','currentLocation','relationshipStatus',);
+		$data = $profileData['profiledata'];  	
+		
+		$r_profileData=array();		
+		$excludeFields=array('status','profile_image_url','url');
+		$gpfields=$profileData['mapping_field'];
+	 	$r_profileData=array();
+		//$gpfields=array('displayName','aboutMe','birthday','gender','email','work','currentLocation','relationshipStatus',);
 	
-		$r_profileData['organizations']='';
-		if(isset($data['organizations']))
-		{
-			foreach($data['organizations'] as $edukey=>$eduvalue)
-			{
-				if($eduvalue['type']=='school')
-					{
-						if(isset($r_profileData['organizations']))
-					
-							$r_profileData['organizations']=$r_profileData['organizations'].", ".$eduvalue['name'];
-						else
-							$r_profileData['organizations']=$eduvalue['name'];
-						
-					}
-					if($eduvalue['type']=='work')
-					{
-						if(isset($r_profileData['name']))
-							$r_profileData['work']=$r_profileData['organizations'].", ".$data['name'];
-						else
-							$r_profileData['work']=$data['name'];
-						
-					}
-			
-			}
-		}
-		
-		if(isset($data['image']))
-		{
-			$r_profileData['image']=$data['image']['url'];
-		}
-		if(isset($data['name']))
-		{
-			$namearr=explode(',',$data['name']);
-			
-			if(count==1)
-			{
-				$r_profileData['firstname']=$namearr[0];
-			
-			}
-			if(count==2)
-			{
-				$r_profileData['firstname']=$namearr[0];
-				$r_profileData['lastname']=$namearr[1];
-			
-			}
-			
-			
-			if(count==3)
-			{
-				$r_profileData['firstname']=$namearr[0];
-				$r_profileData['middlename']=$namearr[1];
-				$r_profileData['lastname']=$namearr[2];
-			
-			}
-			
-		}
-		
 		foreach($gpfields as $key=>$arrkey)
 		{
 
-			if(is_array($profileData[$arrkey]))
+			if(!is_array($data[$arrkey]))
 			{
 				
-				$currentval=$this->populatearray($profileData[$arrkey]);				
-				$r_profileData[$arrkey]=$currentval;
-			}
-			else
-			{
-			
 				if($arrkey=="gender" )
-				$r_profileData[$arrkey]=ucwords($profileData[$arrkey]);
+				$r_profileData[$arrkey]=ucwords($data[$arrkey]);
 				else								
-				$r_profileData[$arrkey]=$profileData[$arrkey];
-				
-			
+				$r_profileData[$arrkey]=$data[$arrkey];
 			}
+			
 		
 		}
 		
-		
+		if(isset($data['organizations']))
+		$r_profileData['organizations']=$this->renderorganizations($data['organizations']);
+
+		if(isset($data['placesLived']))
+		$r_profileData['placesLived']=$this->renderlocation($data['placesLived']);
+
+		if(isset($data['urls']))
+		$r_profileData['urls']=$this->renderurlsemails($data['urls']);
+
+		if(isset($data['emails']))
+		$r_profileData['emails']=$this->renderurlsemails($data['emails']);
+
+		if(isset($data['image']))
+		$r_profileData['image']=$data['image']['url'];
 		return $r_profileData;
 
 	}
 	
-	public function populatearray($profileData1)			
+	function renderorganizations($organizations)
 	{
+	
+				foreach($organizations as $edukey=>$eduvalue)
+				{
+					
+					
+						if($eduvalue['type']=='work')
+						{
+							
+								$orgs[]=$eduvalue['name'];
+						
+						}
+			
+				}
+				$orgstr=implode(',',$orgs);
+				return $orgstr;
+		
 
-			$count=0;						
-		  foreach ($profileData1 as $key=>$value)
-		  {
-		 
-				  	if(is_array($value))
-				    {
-								
-				    		$returnval=$this->populatearray($value);
-				        if($returnval)
-				           return $returnval;
-				    }
-				    else if($key=='name')
-				    {
-								return $value;
-				    }
-		     
-		      
-		  }
-
-		 
 	}
+	
+	function rendereducations($organizations)
+	{
+				foreach($organizations as $edukey=>$eduvalue)
+				{
+					if($eduvalue['type']=='school')
+						{
+							if(isset($r_profileData))					
+								$r_profileData=$r_profileData.", ".$eduvalue['name'];
+							else
+								$r_profileData=$eduvalue['name'];
+						
+						}
+				}
+				return $r_profileData;
+	}
+	function renderlocation($location)
+	{
+		
+		foreach($location as $key=>$value)
+		{
+			$address=$value;
+		}
+		
+		$addresstr=implode(',',$address);
+		return $addresstr;
+	}
+	
+	function renderurlsemails($urlemail)
+	{
+		
+		foreach($urlemail as $key=>$value)
+		{
+			$address[]=$value['value'];
+		}
+		
+		$addresstr=implode(',',$address);
+		return $addresstr;
+	}
+	
+	
 
 }
+
 
 
 

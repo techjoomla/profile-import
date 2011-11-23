@@ -10,18 +10,8 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 		
 		$data = $profileData['profiledata'];
   	
-		$r_profileData=array();
-		$fbfieldsarr=explode("\n",$profileData['mapping_field']);
-		
-		foreach($fbfieldsarr as $fbfieldskey=>$fbfieldsval)
-		{
-			
-			$currentvalarr=array();
-			$currentvalarr=explode('=',$fbfieldsval);
-			if((trim($currentvalarr[1])) && isset($currentvalarr[1]))
-			$currentvalarrFinal[]=trim($currentvalarr[1]);
-		}
-		$fbfields=$currentvalarrFinal;
+		$r_profileData=array();		
+		$fbfields=$profileData['mapping_field'];
 		//$fbfieldsA=array('first_name','middle_name','last_name','name','gender','email','work','location','hometown','bio','picture-url');
 		
 		if(isset($data['date-of-birth']))
@@ -31,7 +21,6 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 
 			if($data['date-of-birth']['day']<10)
 			$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
-
 			$r_profileData['birthdate']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
 		}
 		
@@ -40,7 +29,7 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 		{
 			foreach($data['education'] as $edukey=>$eduvalue)
 			{
-				if(isset(trim($eduvalue['degree']['name'])))
+				if(trim($eduvalue['degree']['name']))
 					{
 						if(isset($r_profileData['education']))					
 							$r_profileData['education']=$r_profileData['education'].", ".$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
@@ -52,7 +41,7 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 			}
 		}
 		
-		foreach($currentvalarrFinal as $key=>$arrkey)
+		foreach($fbfields as $key=>$arrkey)
 		{
 			
 			
@@ -74,7 +63,11 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 			}
 		
 		}
-		print_r($r_profileData);die;
+		if(isset($data['picture-url']))
+		{
+			$r_profileData['picture-url']=$data['picture-url'];
+			
+		}
 		return $r_profileData;
   	
   }
@@ -91,7 +84,7 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 								
 				    		$returnval=$this->populatearray($value);
 				        if($returnval)
-				            return $returnval;
+				         return $returnval;
 				    }
 				    else if($key=='name')
 				    {

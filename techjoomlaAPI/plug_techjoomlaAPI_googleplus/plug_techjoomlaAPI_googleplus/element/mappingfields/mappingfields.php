@@ -282,27 +282,23 @@
 				$defaultvalue.=$value.'=gender'."\n";
 				
 				if($value=='FIELD_ADDRESS')
-				$defaultvalue.=$value.'=currentLocation'."\n";
-				
+				$defaultvalue.=$value.'=placesLived'."\n"; //placesLived[].primary
+
+				if($value=='FIELD_CITY')
+				$defaultvalue.=$value.'=currentLocation'."\n";	
+							
 				if($value=='FIELD_BIRTHDATE')
 				$defaultvalue.=$value.'=birthday'."\n";
-				
 				
 				if($value=='FIELD_COLLEGE')
 				$defaultvalue.=$value.'=organizations'."\n";
 				
 				if($value=='FIELD_COUNTRY')
-				$defaultvalue.=$value.'=country'."\n";
+				$defaultvalue.=$value.'=country'."\n"; //????????
 				
 				
-				if($value=='FIELD_GRADUATION')
-				$defaultvalue.=$value.'=graduation'."\n";
-				
-				if($value=='FIELD_MOBILE')
-				$defaultvalue.=$value.'=phone-number'."\n";
-							
-
-
+				if($value=='FIELD_WEBSITE')
+				$defaultvalue.=$value.'=urls'."\n"; //urls|value
 				
 				}
 				return $defaultvalue;
@@ -324,8 +320,18 @@
 				$defaultvalue.=$value.'=lastname'."\n";
 				if($value=='middlename')	 
 				$defaultvalue.=$value.'=middlename'."\n";
+				if($value=='website')	 
+				$defaultvalue.=$value.'=urls'."\n"; //urls|value	
+				if($value=='location')	 
+				$defaultvalue.=$value.'=currentLocation'."\n";
+				if($value=='company')	 
+				$defaultvalue.=$value.'=organizations'."\n"; //organizations|name
+				if($value=='city')	 
+				$defaultvalue.=$value.'=currentLocation'."\n";
+				if($value=='address')	 
+				$defaultvalue.=$value.'=placesLived'."\n"; //placesLived[].primary
 				if($value=='avatar')
-				$defaultvalue.=$value.'=picture-url'."\n";
+				$defaultvalue.=$value.'=image.url'."\n";
 				
 				}
 				return $defaultvalue;

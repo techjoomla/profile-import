@@ -569,7 +569,7 @@ function tagreplace($msg)
 		try{
 				$this->linkedin = new LinkedInAPI($this->API_CONFIG);
 				$this->linkedin->setTokenAccess($session->get("['oauth']['linkedin']['access']",''));			
-				$profileFields='~:(id,first-name,last-name,picture-url,location:(name,country:(code)),current-status,interests,educations:(degree),phone-numbers,date-of-birth,main-address,headline,summary)';
+				$profileFields='~:(id,first-name,last-name,picture-url,location,current-status,interests,educations,phone-numbers,date-of-birth,main-address,headline,summary,positions)';
 				$profileData = $this->linkedin->profile($profileFields);	
 		
 				if($profileData)

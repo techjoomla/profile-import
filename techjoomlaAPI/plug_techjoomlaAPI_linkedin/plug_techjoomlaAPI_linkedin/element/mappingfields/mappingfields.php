@@ -268,9 +268,9 @@
 			$linkfields=array('first-name','last-name','picture-url','summary','gender','location','educations','phone-numbers','main-address','current-status');
 			foreach($fieldnamejs as $key=>$value)
 			{
+			/// what about the picture url ?? avatar=picture-url
 				if($value=='FIELD_ABOUTME')
 				$defaultvalue.=$value.'=summary'."\n";
-				
 				
 				if($value=='FIELD_ADDRESS')
 				$defaultvalue.=$value.'=main-address'."\n";
@@ -283,13 +283,16 @@
 				$defaultvalue.=$value.'=educations'."\n";
 				
 				if($value=='FIELD_COUNTRY')
-				$defaultvalue.=$value.'=country'."\n";
+				$defaultvalue.=$value.'=location'."\n"; //location:(name)
 				
-				/*if($value=='FIELD_GRADUATION')
-				$defaultvalue.=$value.'=education'."\n";*/
+				if($value=='FIELD_GRADUATION')
+				$defaultvalue.=$value.'=education'."\n"; //education|field-of-study
 				
 				if($value=='FIELD_MOBILE')
-				$defaultvalue.=$value.'=phone-numbers'."\n";;
+				$defaultvalue.=$value.'=phone-numbers'."\n";
+				
+				if($value=='FIELD_WEBSITE')
+				$defaultvalue.=$value.'=member-url-resources'."\n";
 							
 
 				
@@ -310,10 +313,30 @@
 				
 				if($value=='lastname')
 				$defaultvalue.=$value.'=last-name'."\n";
-						
+				
+				if($value=='onlinestatus')
+				$defaultvalue.=$value.'=current-share'."\n";						
+
+				if($value=='website')
+				$defaultvalue.=$value.'=member-url-resources'."\n";
+
+				if($value=='location')
+				$defaultvalue.=$value.'=location'."\n";	//location:(name)
+				
+				if($value=='country')
+				$defaultvalue.=$value.'=location'."\n"; //location:(name)
+				
+				if($value=='occupation')
+				$defaultvalue.=$value.'=position'."\n";	 ///position|title
+
+				if($value=='company')
+				$defaultvalue.=$value.'=company'."\n";	//company|name
+
+				if($value=='interests')
+				$defaultvalue.=$value.'=interests'."\n";				
 				
 				if($value=='avatar')
-				$defaultvalue.=$value.'=image'."\n";
+				$defaultvalue.=$value.'=picture-url'."\n";
 				
 				}
 				return $defaultvalue;

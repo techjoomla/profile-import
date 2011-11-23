@@ -9,52 +9,66 @@ class plug_techjoomlaAPI_linkedinHelper
   	
   	require_once(JPATH_COMPONENT.DS.'helper.php');
   	
-  	$prfdata=techjoomlaHelperLogs::xml2array($profileData['linkedin']);
+  	$prfdata=techjoomlaHelperLogs::xml2array($profileData['profiledata']['linkedin']);
   	$data = $prfdata['person']; 
-  	
-		$r_profileData=array();
+  	$r_profileData=array();
+		$linkfields=$profileData['mapping_field'];
 		
-		$linkfields=array('first-name','last-name','picture-url','summary','gender','location','educations','phone-numbers','main-address','current-status');
-		
+		$excludeFields=array('date-of-birth','location','country','educations','phone-numbers','positions','picture-url');
+		if(isset($data['picture-url']))
+		{
+			$r_profileData['picture-url']=$data['picture-url'];
+			
+		}
 		if(isset($data['date-of-birth']))
 		{
-			if($data['date-of-birth']['month']<10)
-			$data['date-of-birth']['month']='0'.$data['date-of-birth']['month'];		
-			if($data['date-of-birth']['day']<10)
-			$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
+			$r_profileData['date-of-birth']=$this->renderdateofbirth($data['date-of-birth']);
 			
-			$r_profileData['date-of-birth']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
 		}
 		
 		if($data['location']['country']['code'])
 		{
-		$r_profileData['country']=	$this->country_code_to_country(strtoupper($data['location']['country']['code']));
-		
+			$r_profileData['country']=	$this->country_code_to_country(strtoupper($data['location']['country']['code']));
 		}
 		
+		if($data['educations'])
+		{
+			$r_profileData['educations']=	$this->rendereducations($data['educations']['education']);
+		}
+		
+		if($data['phone-numbers']['phone-number'])
+		{
+			$r_profileData['phone-numbers']=	$this->renderphonenumbers($data['phone-numbers']['phone-number']);
+		}
+		
+		if($data['positions']['position'])
+		{
+			$r_profileData['positions']=	$this->renderpositions($data['positions']['position']);
+		}
 		foreach($linkfields as $key=>$arrkey)
 		{
-
-			if(is_array($profileData[$arrkey]))
-			{
+		 if(!in_array($arrkey,$excludeFields))
+		 {
+				if(is_array($data[$arrkey]))
+				{
 				
-				$currentval=$this->populatearray($profileData[$arrkey]);				
-				$r_profileData[$arrkey]=$currentval;
-			}
-			else
-			{
-			
-				if($arrkey=="gender")
-				$r_profileData[$arrkey]=ucwords($profileData[$arrkey]);
-				else								
-				$r_profileData[$arrkey]=$profileData[$arrkey];
+					$currentval=$this->populatearray($data[$arrkey]);				
+					$r_profileData[$arrkey]=$currentval;
+				}
+				else
+				{
+				
+					if($arrkey=="gender" )
+					$r_profileData[$arrkey]=ucwords($data[$arrkey]);
+					else								
+					$r_profileData[$arrkey]=$data[$arrkey];
 				
 			
+				}
 			}
-		
 		}
 		
-		//print_r($r_profileData);die;
+		
 		return $r_profileData;
   
   }
@@ -84,6 +98,66 @@ class plug_techjoomlaAPI_linkedinHelper
 		 
 	}
 	
+	public function renderdateofbirth($dateofbirth)
+	{
+		if($dateofbirth['month']<10)
+			$dateofbirth['month']='0'.$dateofbirth['month'];		
+		if($dateofbirth['day']<10)
+			$dateofbirth['day']='0'.$dateofbirth['day'];
+		
+		$renderdateofbirth		=	$dateofbirth['year'].'-'.$dateofbirth['month'].'-'.$dateofbirth['day'];
+		return $renderdateofbirth;
+	}
+	
+	
+	public function rendereducations($educations)
+	{
+		$degree=array();
+		foreach($educations as $key=>$value)
+		{
+	
+		
+			if(isset($value['degree']))
+			$degree[]=$value['degree'];
+		
+		}
+		
+		$degreestr=implode("\n",$degree);
+		return $degreestr;
+	}
+	
+	public function renderphonenumbers($phonenumbers)
+	{
+		$phone=array();
+		foreach($phonenumbers as $key=>$value)
+		{
+			
+			$phonetype='';
+			$type='';
+			
+			if($value)
+			$phone[]=' '.$value;	
+		
+		}
+		
+		$phonestr=implode("-",$phone);
+		
+		return $phonestr;
+		
+	}
+	
+	public function renderpositions($positions)
+	{
+		$company=array();
+		foreach($positions as $key=>$value)
+		{
+			
+			$company[]=$value['title'].','.$value['company']['name'];
+		
+		}		
+		$companystr=implode("\n",$company);
+		return $companystr;
+	}
 	function country_code_to_country( $code ){
     $country = '';
     if( $code == 'AF' ) $country = 'Afghanistan';
