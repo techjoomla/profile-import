@@ -85,7 +85,7 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 		 
 	}
 	
-	public rendereducations($education)
+	public function rendereducations($education)
 	{
 		$r_education='';
 		foreach($education as $edukey=>$eduvalue)
