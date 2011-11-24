@@ -25,13 +25,9 @@ class plug_techjoomlaAPI_twitterHelper
 		$r_profileData['current-status']=	$data['status']['text'];
 		
 		if(isset($data['profile_image_url']))
-		$r_profileData['profile_image_url']=$data['profile_image_url'];
+		$r_profileData['profile_image_url']=	$data['profile_image_url'];	
 		
-		if(isset($data['url']))
-		$r_profileData['url']=$data['url'];
 		
-		if(isset($data['status']['text']))
-		$r_profileData['status']=$data['status']['text'];
 		
 		return $r_profileData;
   	
