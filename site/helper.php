@@ -6,7 +6,9 @@ class comprofileimportHelper
  	
 
 	public function RenderParamsprofileimport($params){
+	
 		$fbfieldsarr=explode("\n",$params);		
+		$currentvalarrFinal='';
 		foreach($fbfieldsarr as $fbfieldskey=>$fbfieldsval)
 		{
 			$currentvalarr=array();
@@ -16,6 +18,19 @@ class comprofileimportHelper
 		}
 		
 		return $currentvalarrFinal;
+	}
+	
+	
+	/*
+	This function gets Field names based on field codes in Jomsocial
+	*/
+	public function getfieldnameJS($fieldcode)
+	{
+				$query = "SELECT name FROM #__community_fields WHERE fieldcode =".$db->Quote(trim($fieldcode));
+				$db->setQuery($query);
+				$jsfieldname = $db->loadResult();
+				return $jsfieldname;
+	
 	}
 	
 /*
