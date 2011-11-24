@@ -569,9 +569,23 @@ function tagreplace($msg)
 		try{
 				$this->linkedin = new LinkedInAPI($this->API_CONFIG);
 				$this->linkedin->setTokenAccess($session->get("['oauth']['linkedin']['access']",''));			
-				$profileFields='~:(id,first-name,last-name,picture-url,location,current-status,interests,educations,phone-numbers,date-of-birth,main-address,headline,summary,positions)';
-				$profileData = $this->linkedin->profile($profileFields);	
+				require_once(JPATH_SITE.DS.'components/com_profileimport/helper.php');
+				if($integr_with==0)
+					$mapping_field = $this->params->get('mapping_field_0'); 
+				if($integr_with==1)
+					$mapping_field = $this->params->get('mapping_field_1'); 
+				if($integr_with==2)
+					$mapping_field = $this->params->get('mapping_field_2'); 
 		
+				$mapping_fieldParams=comprofileimportHelper::RenderParamsprofileimport($mapping_field);
+				
+				$linkarr=array('id','first-name','last-name','picture-url','location','current-status','interests','educations','phone-numbers','date-of-birth','main-address','headline','summary','positions');
+				
+				$linkfinal=array_intersect($linkarr, $mapping_fieldParams);
+				$mapping_fieldParamstrr=implode(',',$linkfinal);
+				$profileFields='~:('.$mapping_fieldParamstrr.')';
+				//$profileFields='~:(id,first-name,last-name,picture-url,location,current-status,interests,educations,phone-numbers,date-of-birth,main-address,headline,summary,positions)';
+				$profileData = $this->linkedin->profile($profileFields);	
 				if($profileData)
 				{
 					$profileDetails['profileData']=$profileData;	

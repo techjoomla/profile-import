@@ -172,7 +172,7 @@
 				}
 		
 				if($name=='mapping_field_2'){	//CB
-					if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+					if(!JFolder::exists(JPATH_SITE.DS.'components'. DS .'com_comprofiler') )
 						{ 
 							return JText::_('CB_NOT_INSTALLED');
 						}
@@ -286,7 +286,7 @@
 				$defaultvalue.=$value.'=location'."\n"; //location:(name)
 				
 				if($value=='FIELD_GRADUATION')
-				$defaultvalue.=$value.'=education'."\n"; //education|field-of-study
+				$defaultvalue.=$value.'=educations'."\n"; //education|field-of-study
 				
 				if($value=='FIELD_MOBILE')
 				$defaultvalue.=$value.'=phone-numbers'."\n";
@@ -330,7 +330,7 @@
 				$defaultvalue.=$value.'=position'."\n";	 ///position|title
 
 				if($value=='company')
-				$defaultvalue.=$value.'=company'."\n";	//company|name
+				$defaultvalue.=$value.'=position'."\n";	//company|name
 
 				if($value=='interests')
 				$defaultvalue.=$value.'=interests'."\n";				
