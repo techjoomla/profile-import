@@ -14,33 +14,6 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 		$fbfields=$profileData['mapping_field'];
 		//$fbfieldsA=array('first_name','middle_name','last_name','name','gender','email','work','location','hometown','bio','picture-url');
 		
-		if(isset($data['date-of-birth']))
-		{
-			if($data['date-of-birth']['month']<10)
-			$data['date-of-birth']['month']='0'.$data['date-of-birth']['month'];
-
-			if($data['date-of-birth']['day']<10)
-			$data['date-of-birth']['day']='0'.$data['date-of-birth']['day'];
-			$r_profileData['birthdate']=	$data['date-of-birth']['year'].'-'.$data['date-of-birth']['month'].'-'.$data['date-of-birth']['day'];
-		}
-		
-		$r_profileData['education']='';
-		if(isset($data['education']))
-		{
-			foreach($data['education'] as $edukey=>$eduvalue)
-			{
-				if(trim($eduvalue['degree']['name']))
-					{
-						if(isset($r_profileData['education']))					
-							$r_profileData['education']=$r_profileData['education'].", ".$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
-						else
-						$r_profileData['education']=$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
-						$r_profileData['graduation']=$eduvalue['year']['name'];
-					}
-			
-			}
-		}
-		
 		foreach($fbfields as $key=>$arrkey)
 		{
 			
@@ -68,6 +41,21 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 			$r_profileData['picture-url']=$data['picture-url'];
 			
 		}
+		if(isset($data['birthday']))
+		{
+			$r_profileData['birthday']=str_replace('/','-',$data['birthday']);
+			
+		}
+		
+		$r_profileData['education']='';
+		
+		if(isset($data['education']))
+		{
+			$r_profileData['education']=$this->rendereducations($data['education']);
+			
+		}
+		
+		$r_profileData['graduation']=$r_profileData['education'];
 		return $r_profileData;
   	
   }
@@ -95,6 +83,25 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 		  }
 
 		 
+	}
+	
+	public rendereducations($education)
+	{
+		$r_education='';
+		foreach($education as $edukey=>$eduvalue)
+			{
+				if(trim($eduvalue['degree']['name']))
+					{
+						if(isset($r_education))					
+							$r_education=$r_education.", ".$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
+						else
+							$r_education=$eduvalue['degree']['name']." ".$eduvalue['school']['name']."  \n";
+						
+					}
+			
+			}
+			return $r_education;
+	
 	}
 
 }
