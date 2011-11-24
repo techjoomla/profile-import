@@ -219,6 +219,7 @@ class profileimportModelimport extends JModel
 		
 	function importProfile_JS($profileData,$mapData,$db,$userid,$maparr,$pfData)
 	{
+		require_once(JPATH_SITE.DS.'components/com_profileimport/helper.php');
 		$session = JFactory::getSession();	
 		$jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
 		if(JFolder::exists($jspath))
@@ -233,8 +234,10 @@ class profileimportModelimport extends JModel
 			$return=$jomsocial->updateUserData(trim($maparr[0]),$userid,$pfData);	
 			if($return)		
 			{
-				$JS_updatedfield =$session->get('JS_updatedfield');				
-				$JS_updatedfield[]=$maparr[0];				
+				$JS_updatedfield =$session->get('JS_updatedfield');		
+				$mapping_fieldParams=comprofileimportHelper::getfieldnameJS($maparr[0]);		
+				
+				$JS_updatedfield[]=$jsfieldname;								
 				$session->set('JS_updatedfield', $JS_updatedfield);
 			}
 
@@ -250,7 +253,7 @@ class profileimportModelimport extends JModel
 			$fieldname = $db->loadResult();
 			$session = JFactory::getSession();	
 			if($fieldname) {	
-				if($fieldname=='avatar')
+				if($key=="image" or $key=="picture-url" or $key=="profile_image_url")
 				{
 				$pfData=$this->imageUploadCB($pfData,$userid);			
 				}
