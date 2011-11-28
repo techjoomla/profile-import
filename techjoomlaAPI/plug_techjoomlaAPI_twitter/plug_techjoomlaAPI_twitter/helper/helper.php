@@ -6,8 +6,8 @@ class plug_techjoomlaAPI_twitterHelper
 	
 	function plug_techjoomlaAPI_twitterRender_profile($profileData)
   {
-  	$data = $profileData['profiledata'];  	
-		$r_profileData=array();		
+  	$data = $profileData['profiledata'];  
+  	$r_profileData=array();		
 		$excludeFields=array('status','profile_image_url','url');
 		$twitterfields=$profileData['mapping_field'];
 	 	$r_profileData=array();
