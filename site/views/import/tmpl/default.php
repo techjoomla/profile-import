@@ -34,10 +34,9 @@ if(trim($pfdesc)=='')		$pfdesc=JText::_('SELECT_API_DES');
 function prosubmit(formname)
 {
 	
-	conf=confirm('<?php echo JText::_('PF_SURE_TO_IMPORT'); ?>');
-	console.log(formname);
+	conf=confirm("<?php echo JText::_('PF_SURE_TO_IMPORT'); ?>");
 	formnamestr=formname.toString();
-	if(conf==true)
+	if(conf.toString()=='true')
 	document.forms[formnamestr].submit();
 	else
 	return;
