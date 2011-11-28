@@ -9,15 +9,12 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
   {
 		
 		$data = $profileData['profiledata'];
-  	
-		$r_profileData=array();		
+  	$r_profileData=array();		
 		$fbfields=$profileData['mapping_field'];
 		//$fbfieldsA=array('first_name','middle_name','last_name','name','gender','email','work','location','hometown','bio','picture-url');
 		
 		foreach($fbfields as $key=>$arrkey)
 		{
-			
-			
 			if(is_array($data[$arrkey]))
 			{
 				
@@ -43,7 +40,9 @@ function plug_techjoomlaAPI_facebookRender_profile($profileData)
 		}
 		if(isset($data['birthday']))
 		{
-			$r_profileData['birthday']=str_replace('/','-',$data['birthday']);
+			$birthday[]=explode('/',$data['birthday']);
+			$birthdaystr=$birthday[2].'-'.$birthday[0].'-'.$birthday[1];
+			$r_profileData['birthday']=$birthdaystr;
 			
 		}
 		
