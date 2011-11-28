@@ -18,7 +18,7 @@
 		<folder>plug_techjoomlaAPI_linkedin</folder>
 	</files>
 	<languages folder="language"> 
-			<language tag="/en-GB">/en-GB/en-GB.plug_techjoomlaAPI_linkedin.ini</language>
+			<language tag="/en-GB">/en-GB/en-GB.plg_techjoomlaAPI_plug_techjoomlaAPI_linkedin.ini</language>
 	</languages>
 	<!-- parameters for Joomla 1.5.x -->
 	<params addpath="/plugins/techjoomlaAPI/plug_techjoomlaAPI_linkedin/element/pathapi">
