@@ -26,6 +26,7 @@ class comprofileimportHelper
 	*/
 	public function getfieldnameJS($fieldcode)
 	{
+				$db = JFactory::getDBO();
 				$query = "SELECT name FROM #__community_fields WHERE fieldcode =".$db->Quote(trim($fieldcode));
 				$db->setQuery($query);
 				$jsfieldname = $db->loadResult();
