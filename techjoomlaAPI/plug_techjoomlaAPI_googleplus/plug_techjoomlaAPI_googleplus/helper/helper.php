@@ -6,14 +6,12 @@ class plug_techjoomlaAPI_googleplusHelper
 	
 	function plug_techjoomlaAPI_googleplusRender_profile($profileData)
 	{
-		$data = $profileData['profiledata'];  	
-		
+		$data = $profileData['profiledata'];		
 		$r_profileData=array();		
 		$excludeFields=array('status','profile_image_url','url');
 		$gpfields=$profileData['mapping_field'];
 	 	$r_profileData=array();
 		//$gpfields=array('displayName','aboutMe','birthday','gender','email','work','currentLocation','relationshipStatus',);
-	
 		foreach($gpfields as $key=>$arrkey)
 		{
 
@@ -27,6 +25,13 @@ class plug_techjoomlaAPI_googleplusHelper
 			}
 			
 		
+		}
+		
+		if(isset($data['name']))
+		{		
+			$r_profileData['familyName']	=	$data['name']['familyName'];
+			$r_profileData['givenName']		=	$data['name']['givenName'];
+			$r_profileData['middleName']	=	$data['name']['middleName'];
 		}
 		
 		if(isset($data['organizations']))
@@ -83,6 +88,7 @@ class plug_techjoomlaAPI_googleplusHelper
 				}
 				return $r_profileData;
 	}
+	
 	function renderlocation($location)
 	{
 		
@@ -110,9 +116,4 @@ class plug_techjoomlaAPI_googleplusHelper
 	
 
 }
-
-
-
-
-
 
