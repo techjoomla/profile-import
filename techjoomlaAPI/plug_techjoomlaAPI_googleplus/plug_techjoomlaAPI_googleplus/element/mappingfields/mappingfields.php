@@ -51,10 +51,10 @@
 					$onchange	= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 					
 					if($this->id=='jform_params_pathapi_googleplus_docs')
-				{
+					{
 						
-						return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
-				}
+							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+					}
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
 							if($firstinstall)
@@ -315,11 +315,11 @@
 				
 				
 				if($value=='firstname')
-				$defaultvalue.=$value.'=firstname'."\n";				
+				$defaultvalue.=$value.'=givenName'."\n";				
 				if($value=='lastname')
-				$defaultvalue.=$value.'=lastname'."\n";
+				$defaultvalue.=$value.'=familyName'."\n";
 				if($value=='middlename')	 
-				$defaultvalue.=$value.'=middlename'."\n";
+				$defaultvalue.=$value.'=middleName'."\n";
 				if($value=='website')	 
 				$defaultvalue.=$value.'=urls'."\n"; //urls|value	
 				if($value=='location')	 
@@ -327,11 +327,11 @@
 				if($value=='company')	 
 				$defaultvalue.=$value.'=organizations'."\n"; //organizations|name
 				if($value=='city')	 
-				$defaultvalue.=$value.'=currentLocation'."\n";
+				$defaultvalue.=$value.'=placesLived'."\n";
 				if($value=='address')	 
 				$defaultvalue.=$value.'=placesLived'."\n"; //placesLived[].primary
 				if($value=='avatar')
-				$defaultvalue.=$value.'=image.url'."\n";
+				$defaultvalue.=$value.'=image'."\n";
 				
 				}
 				return $defaultvalue;
