@@ -15,7 +15,7 @@ class profileimportViewsettings extends JView
 	function _setToolBar()
 	{	
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet(JURI::base().'components/com_profileimport/css/broadcast.css'); 
+		$document->addStyleSheet(JURI::base().'components/com_profileimport/css/profileimport.css'); 
 		$bar =& JToolBar::getInstance('toolbar');
 		JToolBarHelper::title( JText::_( 'PI_SOCIAL' ), 'icon-48-profileimport.png' );
 		JToolBarHelper::save('save',JText::_('PI_SAVE') );
