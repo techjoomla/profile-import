@@ -185,7 +185,7 @@ class profileimportModelimport extends JModel
 								if($integr_with=='1')	
 									$return=$this->importProfile_JS($profileData,$mapData['1'],$db,$userid,$maparr,$pfData);										
 								if($integr_with=='2')
-									$return=$this->importProfile_CB($profileData,$mapData['2'],$db,$userid,$maparr,$pfData);
+									$return=$this->importProfile_CB($profileData,$mapData['2'],$db,$userid,$maparr,$pfData,$key);
 							}
 							else
 							{
@@ -246,21 +246,24 @@ class profileimportModelimport extends JModel
 		
 	}
 	
-	function importProfile_CB($profileData,$mapData,$db,$userid,$maparr,$pfData)
+	function importProfile_CB($profileData,$mapData,$db,$userid,$maparr,$pfData,$key)
 	{
+		
 			$query = "SELECT name FROM #__comprofiler_fields WHERE name=".$db->Quote($maparr[0]);	
 			$db->setQuery($query);
 			$fieldname = $db->loadResult();
 			$session = JFactory::getSession();	
 			if($fieldname) {	
+			
 				if($key=="image" or $key=="picture-url" or $key=="profile_image_url")
 				{
+				
 				$pfData=$this->imageUploadCB($pfData,$userid);			
 				}
 
 				$query = "UPDATE #__comprofiler SET `".$fieldname."`= '$pfData' WHERE  user_id = $userid ";
 				$db->setQuery($query);
-				$result=$db->query();	
+				$return=$db->query();	
 				
 				if($return)		
 				{
@@ -269,7 +272,7 @@ class profileimportModelimport extends JModel
 					$session->set('CB_updatedfield', $CB_updatedfield);
 				}
 				
-				return 1;
+				return $return;
 			}	
 	}
 
