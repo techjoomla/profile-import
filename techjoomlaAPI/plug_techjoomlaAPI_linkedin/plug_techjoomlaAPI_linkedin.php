@@ -585,9 +585,8 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_linkedin extends JPlugin
 		
 				$mapping_fieldParams=comprofileimportHelper::RenderParamsprofileimport($mapping_field);
 				
-				$linkarr=array('id','first-name','last-name','picture-url','location','current-status','interests','educations','phone-numbers','date-of-birth','main-address','headline','summary','positions');
-				
-				$linkfinal=array_intersect($linkarr, $mapping_fieldParams);
+				$linkfinal=array('id','first-name','last-name','picture-url','location','current-status','interests','educations','phone-numbers','date-of-birth','main-address','headline','summary','positions');
+				//$linkfinal=array_intersect($linkarr, $mapping_fieldParams);
 				$mapping_fieldParamstrr=implode(',',$linkfinal);
 				$profileFields='~:('.$mapping_fieldParamstrr.')';
 				//$profileFields='~:(id,first-name,last-name,picture-url,location,current-status,interests,educations,phone-numbers,date-of-birth,main-address,headline,summary,positions)';
