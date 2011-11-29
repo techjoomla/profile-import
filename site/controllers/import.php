@@ -56,13 +56,14 @@ class profileimportControllerimport extends JController
 		$itemid=$session->get("PFI_itemid",'');
 		if($return['return']==1)
 		{
-			$integr_with=$return['integr_with'];
+			/*$integr_with=$return['integr_with'];
 			if($integr_with==0)
 				$integr_nm=JText::_("PF_INT_JOOMLA");
 			else if($integr_with==1)
 				$integr_nm=JText::_("PF_INT_JS");
 			else if($integr_with==2)
-				$integr_nm=JText::_("PF_INT_CB");
+				$integr_nm=JText::_("PF_INT_CB");*/
+				$integr_nm='';
 				
 				$updated_data='';
 				if($return['profilefields'])
