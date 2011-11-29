@@ -311,13 +311,25 @@
 			{
 				
 				if($value=='firstname')
-				$defaultvalue.=$value.'=firstname'."\n";
-				
-				if($value=='lastname')
-				$defaultvalue.=$value.'=lastname'."\n";
-				
+				$defaultvalue.=$value.'=name'."\n";				
+				if($value=='email')
+					$defaultvalue.=$value.'=url'."\n";
+				if($value=='website')
+					$defaultvalue.=$value.'=website'."\n";
+				if($value=='city')
+					$defaultvalue.=$value.'=location'."\n";
+				if($value=='location')
+					$defaultvalue.=$value.'=location'."\n";
+				/*if($value=='occupation')
+					$defaultvalue.=$value.'=work'."\n";	*/	
+				if($value=='interests')
+					$defaultvalue.=$value.'=description'."\n";
 				if($value=='avatar')
-				$defaultvalue.=$value.'=image'."\n";
+					$defaultvalue.=$value.'=profile_image_url'."\n";					
+			
+				
+				
+				
 				
 				}
 				
