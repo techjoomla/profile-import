@@ -6,7 +6,8 @@ class plug_techjoomlaAPI_googleplusHelper
 	
 	function plug_techjoomlaAPI_googleplusRender_profile($profileData)
 	{
-		$data = $profileData['profiledata'];		
+		$data = $profileData['profiledata'];	
+			
 		$r_profileData=array();		
 		$excludeFields=array('status','profile_image_url','url');
 		$gpfields=$profileData['mapping_field'];
@@ -28,10 +29,27 @@ class plug_techjoomlaAPI_googleplusHelper
 		}
 		
 		if(isset($data['name']))
-		{		
-			$r_profileData['familyName']	=	$data['name']['familyName'];
-			$r_profileData['givenName']		=	$data['name']['givenName'];
-			$r_profileData['middleName']	=	$data['name']['middleName'];
+		{
+			
+			if(isset($data['name']['familyName']) or isset($data['name']['givenName']) or isset($data['name']['middleName']))	
+			{
+				
+				$r_profileData['familyName']	=	$data['name']['familyName'];
+				$r_profileData['givenName']		=	$data['name']['givenName'];
+				$r_profileData['middleName']	=	$data['name']['middleName'];
+			}
+			else
+			{
+				$name=explode(' ',$data['name']);				
+				if(isset($name[1]))
+				$r_profileData['givenName']		=	$name[1];
+				if(isset($name[2]))
+				$r_profileData['middleName']	=	$name[2];
+				if(isset($name[0]))
+				$r_profileData['familyName']	=	$name[0];
+			
+			}
+			
 		}
 		
 		if(isset($data['organizations']))
