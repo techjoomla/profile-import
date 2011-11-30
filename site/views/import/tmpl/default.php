@@ -108,7 +108,7 @@ for($i=0; $i<count($apidata); $i++)
 												
 													<div    class="form_api" id="<?php echo 'api_'.$api_cnt.'div'?>" >
 														<form name="<?php echo $form_name ?>" id="<?php echo $form_name ?>" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
-																 <div onclick="prosubmit('<?php echo $form_name ?>');"><img height="50" width="50" src="<?php echo $img_path.$result[$i]['img_file_name'] ?>" /></div>
+																 <div onclick="prosubmit('<?php echo $form_name ?>');"><img	class="api_img" height="50" width="50" src="<?php echo $img_path.$result[$i]['img_file_name'] ?>" /></div>
 																	<input type="hidden" name="option" value="com_profileimport"/>
 																	<input type="hidden" name="controller" value="import"/>
 																	<input type="hidden" name="task" value="get_request_token"/>
