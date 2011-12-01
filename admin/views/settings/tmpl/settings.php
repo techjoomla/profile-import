@@ -70,7 +70,7 @@ else
 	<tr>
 			
 			<?php
-					$value='';
+					$value=-1;
 					if($profileimport_config['reg_direct']==0)
 						$value = 0;
 					else if($profileimport_config['reg_direct']==1)
@@ -100,11 +100,11 @@ else
 		<?php 
 						$pftitle='';
 						$pfdesc='';
-						if($profileimport_config['pi_title_frontend'])
+						if(isset($profileimport_config['pi_title_frontend']))
 						$pftitle=$profileimport_config['pi_title_frontend'];
-						if($profileimport_config['pi_details_frontend'])
+						if(isset($profileimport_config['pi_details_frontend']))
 						$pfdesc=$profileimport_config['pi_details_frontend'];
-						if(trim($pftitle)=='') $pftitle=JText::_('PI_SETT');
+						if(trim($pftitle)=='') $pftitle=JText::_('SELECT_API');
 						if(trim($pfdesc)=='')		$pfdesc=JText::_('SELECT_API_DES');
 		?>
 		
