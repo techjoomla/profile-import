@@ -53,7 +53,7 @@
 					if($this->id=='jform_params_pathapi_googleplus_docs')
 					{
 						
-							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+							return  '<a href="https://developers.google.com/+/api/latest/people" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 					}
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
@@ -119,6 +119,7 @@
 	{
 	class JElementMappingfields extends JElement
 	{
+		
 		public $type = 'mappingfields';
 		var $_name = 'mappingfields';
 		function fetchElement($name, $value, &$node, $control_name)
@@ -134,14 +135,11 @@
 			
 			if($name=='pathapi_googleplus_docs')
 			{
-					return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+					return  '<a href="https://developers.google.com/+/api/latest/people" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 			}
 				
-			if($this->id=='jform_params_pathapi_googleplus_docs')
-					{
-							
-							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
-					}
+				
+				
 				if($name=='mapping_field_0'){ 	//joomla
 									
 					if($firstinstall)
@@ -206,6 +204,7 @@
 	{
 		public function checkfirstinstall()
 		{
+		$mapping_field_0=$mapping_field_1=$mapping_field_2='';
 			if(JVERSION>=1.6)
 			{
 				$plugin = JPluginHelper::getPlugin('techjoomlaAPI', 'plug_techjoomlaAPI_googleplus');
@@ -218,10 +217,15 @@
 			else
 			{
 				$plugin = &JPluginHelper::getPlugin('techjoomlaAPI', 'plug_techjoomlaAPI_googleplus');
-				$pluginParams = new JParameter($plugin->params);
-				$mapping_field_0 = $pluginParams->get('mapping_field_0'); 
-				$mapping_field_1 = $pluginParams->get('mapping_field_1'); 
-				$mapping_field_2 = $pluginParams->get('mapping_field_2'); 
+					if($plugin)
+					{
+						$pluginParams = new JParameter($plugin->params);					
+						$mapping_field_0 = $pluginParams->get('mapping_field_0'); 
+						$mapping_field_1 = $pluginParams->get('mapping_field_1'); 
+						$mapping_field_2 = $pluginParams->get('mapping_field_2'); 
+					}
+					
+				
 			}
 			
 			if(($mapping_field_0) or ($mapping_field_1) or ($mapping_field_2))
