@@ -282,7 +282,7 @@
 				
 				
 				if($value=='FIELD_GRADUATION')
-				$defaultvalue.=$value.'=graduation'."\n";
+				$defaultvalue.=$value.'=education'."\n";
 				
 				if($value=='FIELD_MOBILE')
 				$defaultvalue.=$value.'=phone-number'."\n";

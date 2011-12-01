@@ -276,7 +276,7 @@
 				
 				
 				if($value=='FIELD_ADDRESS')
-				$defaultvalue.=$value.'=address'."\n";
+				$defaultvalue.=$value.'=location'."\n";
 				
 				if($value=='FIELD_BIRTHDATE')
 				$defaultvalue.=$value.'=birthdate'."\n";
@@ -286,7 +286,7 @@
 				$defaultvalue.=$value.'=education'."\n";
 				
 				if($value=='FIELD_COUNTRY')
-				$defaultvalue.=$value.'=country'."\n";
+				$defaultvalue.=$value.'=location'."\n";
 				
 				
 				if($value=='FIELD_GRADUATION')

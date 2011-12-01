@@ -167,45 +167,47 @@ class profileimportModelimport extends JModel
 			$maptext 	= explode("\n",trim($lines));
 			
 			$js_img_upload=0;
+			$js_img_url='';
 			
 			foreach ($profileData as $key=>$pfData) 
 			{
 				foreach ($maptext as $mapkey=>$fieldmap) 
 				{
 					
+					
 					$maparr		=array('0'=>0,'1'=>0,'2'=>0);					
 					$maparr 	= explode("=",trim($fieldmap));
 										
 					if(isset($pfData) and isset($maparr['1']))
 					{
+							if(($key=="image" or $key=="picture-url" or $key=="profile_image_url") and ($integr_with=='1' and $js_img_upload==0))//Jomsocial Avatar Upload
+							{
+								$js_img_upload=1;									
+								$js_img_url=$pfData;
+							}
+							
 							if(trim($maparr['1'])==trim($key))
 							{
+							
+								
 								if($integr_with=='0')
 									$return=$this->importProfile_Joomla($profileData,$mapData['0'],$db,$userid,$maparr,$pfData);
 								if($integr_with=='1')	
 									$return=$this->importProfile_JS($profileData,$mapData['1'],$db,$userid,$maparr,$pfData);										
 								if($integr_with=='2')
 									$return=$this->importProfile_CB($profileData,$mapData['2'],$db,$userid,$maparr,$pfData,$key);
+								
 							}
-							else
-							{
-						
-								if(($key=="image" or $key=="picture-url" or $key=="profile_image_url") and ($integr_with=='1' and $js_img_upload==0))//Jomsocial Avatar Upload
-								{									
-									$js_img_upload=1;
-									
-									$this->imageUploadJS($pfData,$userid,$db);
-								}
 							
-							
-							}//else
 						
-						}//if
+					}//if
 						
-					}//foreach
+				}//foreach
 
 			} //foreach
 			
+			if($js_img_url)
+				$this->imageUploadJS($js_img_url,$userid,$db);
 			
 		return $return;
 			
@@ -219,6 +221,7 @@ class profileimportModelimport extends JModel
 		
 	function importProfile_JS($profileData,$mapData,$db,$userid,$maparr,$pfData)
 	{
+		
 		require_once(JPATH_SITE.DS.'components/com_profileimport/helper.php');
 		$session = JFactory::getSession();	
 		$jspath = JPATH_ROOT.DS.'components'.DS.'com_community';
@@ -234,14 +237,14 @@ class profileimportModelimport extends JModel
 			$return=$jomsocial->updateUserData(trim($maparr[0]),$userid,$pfData);	
 			if($return)		
 			{
-				$JS_updatedfield =$session->get('JS_updatedfield');		
+				$JS_updatedfield =$session->get('JS_updatedfield');				
 				$mapping_fieldParams=comprofileimportHelper::getfieldnameJS($maparr[0]);		
-				
-				$JS_updatedfield[]=$jsfieldname;								
+				$JS_updatedfield[]=$mapping_fieldParams;				
 				$session->set('JS_updatedfield', $JS_updatedfield);
+				
 			}
 
-			return 1;			
+			return $return;			
 		}	
 		
 	}
@@ -278,6 +281,7 @@ class profileimportModelimport extends JModel
 
 	function imageUploadJS($pfData,$userid,$db)
 	{
+			
 			jimport( 'joomla.filesystem.folder' );
 			jimport('joomla.filesystem.file');			
 			$handle 			= fopen($pfData, "r");
