@@ -55,11 +55,14 @@ else
 	$document->addScriptDeclaration($js_key);	
 ?>
 <?php 
+	$allowedapi=array('Facebook','Googleplus','Linkedin','Twitter');
 	echo "<form method='POST' name='adminForm' class='form-validate' action='index.php'>";
 	$apiselect = array();
 	foreach($this->apiplugin as $api)
 	{
+		
 		$apiname = ucfirst(str_replace('plug_techjoomlaAPI_', '',$api->element));
+		if(in_array($apiname,$allowedapi))
 		$apiselect[] = JHTML::_('select.option',$api->element, $apiname);
 	}
 	
