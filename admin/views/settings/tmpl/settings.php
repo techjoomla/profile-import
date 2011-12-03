@@ -12,7 +12,7 @@ require(JPATH_SITE.DS."administrator".DS."components".DS."com_profileimport".DS.
 	else
 		$apis = '';
 
-$import = array(0=>JText::_('PF_JOOMLA'),1=>JText::_('PF_JS'), 2=>JText::_('PF_CB') );
+$import = array(1=>JText::_('PF_JS'), 2=>JText::_('PF_CB') );//array(0=>JText::_('PF_JOOMLA'),1=>JText::_('PF_JS'), 2=>JText::_('PF_CB') );
 					$options= array();
 					foreach($import as $key=>$value) {
 						 	 $options[] = JHTML::_('select.option', $key, $value);
