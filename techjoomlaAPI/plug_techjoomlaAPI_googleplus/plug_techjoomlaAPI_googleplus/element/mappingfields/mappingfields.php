@@ -53,7 +53,7 @@
 					if($this->id=='jform_params_pathapi_googleplus_docs')
 					{
 						
-							return  '<a href="https://developers.google.com/+/api/latest/people" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+							return  '<a href="http://techjoomla.com/documentation-for-profile-import/setup-mapping-fields-for-google.html" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 					}
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
@@ -135,7 +135,7 @@
 			
 			if($name=='pathapi_googleplus_docs')
 			{
-					return  '<a href="https://developers.google.com/+/api/latest/people" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+					return  '<a href="http://techjoomla.com/documentation-for-profile-import/setup-mapping-fields-for-google.html" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 			}
 				
 				

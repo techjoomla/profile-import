@@ -151,9 +151,10 @@ class plug_techjoomlaAPI_linkedinHelper
 		$company=array();
 		foreach($positions as $key=>$value)
 		{
-			
+			if(is_array($value['company']))
 			$company[]=$value['title'].','.$value['company']['name'];
-		
+			else
+			$company[]=$value['title'].','.$value['company'];
 		}		
 		$companystr=implode("\n",$company);
 		return $companystr;

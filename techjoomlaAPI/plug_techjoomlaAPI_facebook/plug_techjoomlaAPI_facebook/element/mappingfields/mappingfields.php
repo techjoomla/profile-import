@@ -53,7 +53,7 @@
 					if($this->id=='jform_params_pathapi_facebook_docs')
 					{
 							
-							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+							return  '<a href="http://techjoomla.com/documentation-for-profile-import/mapping-fields-for-facebook.html" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 					}
 					
 			
@@ -129,7 +129,7 @@
 			
 				if($name=='pathapi_facebook_docs')
 				{
-						return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+						return  '<a href="http://techjoomla.com/documentation-for-profile-import/mapping-fields-for-facebook.html" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 				}
 				if($name=='mapping_field_0'){ 	//joomla
 									

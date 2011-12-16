@@ -54,7 +54,7 @@
 					if($this->id=='jform_params_pathapi_twitter_docs')
 					{
 							
-							return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+							return  '<a href="http://techjoomla.com/documentation-for-profile-import/setup-mapping-fields-for-twitter.html" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 					}
 			
 					if($this->id=='jform_params_mapping_field_0'){ 	//joomla	
@@ -137,7 +137,7 @@
 			
 				if($name=='pathapi_twitter_docs')
 				{
-						return  '<a href="https://developers.facebook.com/apps" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
+						return  '<a href="http://techjoomla.com/documentation-for-profile-import/setup-mapping-fields-for-twitter.html" target="_blank">'.JText::_('API_DOCS_PATH').'</a>';
 				}
 				
 				if($name=='mapping_field_0'){ 	//joomla
