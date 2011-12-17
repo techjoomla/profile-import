@@ -2,7 +2,7 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
+
 require(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_profileimport'.DS.'config'.DS.'config.php');
 
 $document = &JFactory::getDocument();
@@ -46,7 +46,8 @@ function prosubmit(formname)
 
 		//newly added for JS toolbar inclusion
 		if(JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
-		{					
+		{	
+			require_once(JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');				
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'toolbar.php');		
 			$toolbar    =& CFactory::getToolbar();	
 			$tool = CToolbarLibrary::getInstance();
