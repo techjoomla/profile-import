@@ -190,7 +190,7 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_googleplus extends JPlugin
 			}
 			catch(LinkedInException $e)
 			{ 
-				$this->raiseException($e->getMgetTokenessage());
+				$this->raiseException($e->getMessage());
 				return false;
 			}
 			

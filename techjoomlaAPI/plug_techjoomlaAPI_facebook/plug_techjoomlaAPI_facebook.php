@@ -260,22 +260,44 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_facebook extends JPlugin
 	
 	function plug_techjoomlaAPI_facebooksend_message($raw_mail,$invitee_data)
 	{	
+		require(JPATH_SITE.DS.'components'.DS.'com_invitex'.DS.'config.php');
+		$session = JFactory::getSession();	
 		foreach($invitee_data as $id=>$invitee_name)
-		 {
-			$inviteid[]=$id;	
-			}
+		{
+				$invitee_email[]	= "'".$invitee_name.'|'.$id."'";
+				$inviteid[]=$id;	
+		}
 	
 		$inviteeidstr=implode(',',$inviteid);
 		$userid=md5($this->user->id);
 		$regurl= cominvitexHelper::getinviteURL();
+		if($session->get('invite_anywhere'))
+		{
+					$invitee_string=implode(',',$invitee_email);
+					$db				= JFactory::getDBO();
+					$user_id	=	JFactory::getUser()->id;
+					$query="select i.id from #__invitex_imports as i, #__invitex_imports_emails as ie
+									WHERE invitee_email IN($invitee_string) AND i.id=ie.import_id AND i.inviter_id=$user_id group by ie.import_id order by i.id DESC LIMIT 1";
+					$db->setQuery($query);
+					$import_id=trim($db->loadResult());
+					
+					$raw_mail['message_join']=cominvitexHelper::getIAinviteURL($import_id);
+		}
+		else
+		{
+			$raw_mail['message_register']=cominvitexHelper::getinviteURL();
+		}							
+		$message	=	cominvitexHelper::tagreplace($raw_mail);	
 		
+		$subject	= $invitex_settings['pm_message_body_no_replace_sub'];
+		$subject	=	str_replace("[SITENAME]", $raw_mail['sitename'], $subject);
 		$parameters = array(
 		'app_id' => $this->facebook->getAppId(),
 		'to' => $inviteeidstr,
 		'link' => $regurl,
-		'redirect_uri' => JURI::base(),
-		'name'=>'This is the Subject',
-		'description'=>'This is the Message from Config'
+		'redirect_uri' => JURI::base()."index.php?option=com_invitex&view=invites&fb_redirect=success",
+		'name'=>$subject,
+		'description'=>$message
  		);
  		
 		$url = 'http://www.facebook.com/dialog/send?'.http_build_query($parameters);
@@ -283,6 +305,7 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_facebook extends JPlugin
 		die;
 	
   }//end send message
+  
   
   function plug_techjoomlaAPI_facebookgetstatus()
 	{ 
