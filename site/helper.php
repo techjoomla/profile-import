@@ -69,7 +69,8 @@ class comprofileimportHelper
 	
 	public function getFieldNames_js()
 	{
-		
+		if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
+		return '';
 		$db = JFactory::getDBO();
 
 		// Get the user groups from the database.
@@ -83,6 +84,8 @@ class comprofileimportHelper
 	
 	function getFieldNames_cb()
 	{
+			if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_comprofiler') )
+			return '';
 			$db = JFactory::getDBO();
 
 		// Get the user groups from the database.
