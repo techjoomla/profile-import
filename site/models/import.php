@@ -39,7 +39,7 @@ class profileimportModelimport extends JModel
 
 	function getRequestToken($api_used)
 	{
-		$callback=JURI::base().'index.php?option=com_profileimport&controller=import&task=get_access_token';	
+		$callback=JRoute::_(JURI::base().'index.php?option=com_profileimport&controller=import&task=get_access_token');	
 		$dispatcher = &JDispatcher::getInstance();
 		JPluginHelper::importPlugin('techjoomlaAPI',$api_used);
 		$grt_response=$dispatcher->trigger('get_request_token',array($callback));
@@ -51,7 +51,7 @@ class profileimportModelimport extends JModel
 	function getAccessToken($get)
 	{
 		$client="profileimport";
-		$callback = JURI::base()."index.php?option=com_profileimport&controller=import&task=get_access_token";
+		$callback = JRoute::_(JURI::base()."index.php?option=com_profileimport&controller=import&task=get_access_token");
 		$session = JFactory::getSession();
 		$dispatcher = &JDispatcher::getInstance();
 		JPluginHelper::importPlugin('techjoomlaAPI',$session->get('api_used'));
