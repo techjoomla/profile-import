@@ -205,6 +205,7 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_linkedin extends JPlugin
 	}
 	
 	function getToken($user=''){
+			$this->removeDeletedUsers();
 		$user=$this->user->id;
 		$where = '';
 		if($user)
@@ -216,6 +217,35 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_linkedin extends JPlugin
 		$this->db->setQuery($query);
 		return $this->db->loadObjectlist();
 	}
+	
+	//This is function to remove users from Broadcast which are deleted from joomla
+	function removeDeletedUsers()
+	{
+		$query = "SELECT user_id FROM #__techjoomlaAPI_users";
+		$this->db->setQuery($query);
+		$brusers=$this->db->loadObjectlist();
+		if(!$brusers)
+		return;
+		foreach($brusers as $bruser)
+		{
+				$id='';
+				$query = "SELECT id FROM #__users WHERE id=".$bruser->user_id;
+				$this->db->setQuery($query);
+				$id=$this->db->loadResult();
+				if(!$id)
+				{
+					$qry 	= "DELETE FROM #__techjoomlaAPI_users WHERE user_id = {$bruser->user_id} ";
+					$this->db->setQuery($qry);	
+					$this->db->query();
+				
+				}
+				
+
+		
+		}
+	
+	}
+	
 	function remove_token($client)
 	{ 
 		if($client!='')

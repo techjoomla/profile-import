@@ -204,22 +204,34 @@
 	{
 		public function checkfirstinstall()
 		{
+			$pluginParams = '';				
+			$mapping_field_0 = ''; 
+			$mapping_field_1 = ''; 
+			$mapping_field_2 = ''; 
 			if(JVERSION>=1.6)
 			{
 				$plugin = JPluginHelper::getPlugin('techjoomlaAPI', 'plug_techjoomlaAPI_twitter');
-				$pluginParams = new JRegistry();    
+				$pluginParams = new JRegistry(); 
+				if($plugin)     
 				$pluginParams->loadString($plugin->params);
+				if($pluginParams)   
+				{
 				$mapping_field_0 = $pluginParams->get('mapping_field_0'); 
 				$mapping_field_1 = $pluginParams->get('mapping_field_1'); 
 				$mapping_field_2 = $pluginParams->get('mapping_field_2'); 
+				}
 			}
 			else
 			{
 				$plugin = &JPluginHelper::getPlugin('techjoomlaAPI', 'plug_techjoomlaAPI_twitter');
+				if($plugin)  
 				$pluginParams = new JParameter($plugin->params);
+				if($pluginParams)   
+				{
 				$mapping_field_0 = $pluginParams->get('mapping_field_0'); 
 				$mapping_field_1 = $pluginParams->get('mapping_field_1'); 
 				$mapping_field_2 = $pluginParams->get('mapping_field_2'); 
+				}
 			}
 			
 			if(($mapping_field_0) or ($mapping_field_1) or ($mapping_field_2))
@@ -231,6 +243,10 @@
 		
 		public function getMappingValue($fieldcode)
 		{
+			if(!JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_profileimport') )
+			{ 
+				return '';
+			}
 			require_once(JPATH_SITE.DS.'components'.DS.'com_profileimport'.DS.'helper.php');	
 			$fieldnameA=comprofileimportHelper::getFieldNames($fieldcode);
 			return	$fieldnameA;
@@ -268,6 +284,8 @@
 		
 		public function RenderField_js($fieldnamejs)
 		{
+			if(!$fieldnamejs)
+			return;
 			$defaultvalue='';
 			foreach($fieldnamejs as $key=>$value)
 			{

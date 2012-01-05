@@ -63,7 +63,7 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_googleplus extends JPlugin
 		$plug=array(); 
    	$plug['name']="Googleplus";
   	//check if keys are set
-		if($this->appKey=='' || $this->appSecret=='' || $this->developerKey==''  )// || !in_array($this->_name,$config)) #TODO add condition to check config
+		if($this->appKey=='' || $this->appSecret=='' || $this->developerKey==''   || !in_array($this->_name,$config)) 
 		{	
 			$plug['error_message']=true;		
 			return $plug;
@@ -153,6 +153,7 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_googleplus extends JPlugin
 	}
 	
 	function getToken($user=''){
+			$this->removeDeletedUsers();
 		$user=$this->user->id;
 		$where = '';
 		if($user)
@@ -164,6 +165,35 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_googleplus extends JPlugin
 		$this->db->setQuery($query);
 		return $this->db->loadObjectlist();
 	}
+	
+	//This is function to remove users from Broadcast which are deleted from joomla
+	function removeDeletedUsers()
+	{
+		$query = "SELECT user_id FROM #__techjoomlaAPI_users";
+		$this->db->setQuery($query);
+		$brusers=$this->db->loadObjectlist();
+		if(!$brusers)
+		return;
+		foreach($brusers as $bruser)
+		{
+				$id='';
+				$query = "SELECT id FROM #__users WHERE id=".$bruser->user_id;
+				$this->db->setQuery($query);
+				$id=$this->db->loadResult();
+				if(!$id)
+				{
+					$qry 	= "DELETE FROM #__techjoomlaAPI_users WHERE user_id = {$bruser->user_id} ";
+					$this->db->setQuery($qry);	
+					$this->db->query();
+				
+				}
+				
+
+		
+		}
+	
+	}
+	
 	function remove_token($client)
 	{ 
 		if($client!='')
@@ -305,23 +335,9 @@ class plgTechjoomlaAPIplug_techjoomlaAPI_googleplus extends JPlugin
  
 	function plug_techjoomlaAPI_googleplusgetstatus()
 	{  	
-		$i = 0;
-		$returndata = array();
-		$oauth_keys = $this->getToken(); 
-		if($this->params->get('broadcast_limit'))
-	 	$googleplus_profile_limit=$this->params->get('broadcast_limit');
-	 	else
-	 	$googleplus_profile_limit=2;		
-		foreach($oauth_keys as $oauth_key){
-			$this->client->setAccessToken(json_decode($oauth_key->token,true));
-			$this->plus = new apiPlusService($this->client);
-			$me = $this->plus->people->get('me');
-			$optParams = array('maxResults' => 100);
-			$activities = $this->plus->activities->listActivities('me', 'public', $optParams);
-  		print_r($activities);die;
+		
 			
-			
-		}
+		
 		return $returndata;
 	}
   	function renderstatus($totalresponse)
