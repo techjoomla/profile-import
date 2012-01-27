@@ -47,6 +47,17 @@ function prosubmit(formname)
 		//newly added for JS toolbar inclusion
 		if(JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
 		{	
+			$parser		=& JFactory::getXMLParser('Simple');
+			// Load the local XML file first to get the local version
+			$xml		=JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_community' . DS . 'community.xml';
+
+			$parser->loadFile( $xml );
+			$document	=& $parser->document;
+
+			$element		=& $document->getElementByPath( 'version' );
+			$jsversion		= $element->data();
+
+			if($jsversion >= 2.4 and $profileimport_config['show_js_toolbar']==1){
 			require_once(JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');				
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'toolbar.php');		
 			$toolbar    =& CFactory::getToolbar();	
@@ -61,6 +72,7 @@ function prosubmit(formname)
 			<div id="proimport-wrap">
 				<?php
 				echo $tool->getHTML();
+			}
 		}
 		//eoc for JS toolbar inclusion			
 
@@ -143,9 +155,11 @@ for($i=0; $i<count($apidata); $i++)
 <?php
 if(JFolder::exists(JPATH_SITE . DS .'components'. DS .'com_community') )
 { 
+	if($jsversion >= 2.4 and $profileimport_config['show_js_toolbar']==1){
 ?>	
 	</div>	<!-- end of proimport-wrap div -->
 <?php
+	}
 } 
 ?>	
 <!-- eoc for JS toolbar inclusion	 -->

@@ -132,7 +132,48 @@ else
 					<textarea rows="3" cols="20" name="data[pi_details_frontend]"><?php echo $pfdesc ?></textarea>
 				</td>
 		</tr>		
-		
+		<?php 
+if(JFolder::exists(JPATH_SITE.DS."administrator".DS."components".DS."com_community"))
+{
+	$parser		=& JFactory::getXMLParser('Simple');
+
+	// Load the local XML file first to get the local version
+	$xml		=JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_community' . DS . 'community.xml';
+
+	$parser->loadFile( $xml );
+	$document	=& $parser->document;
+
+	$element		=& $document->getElementByPath( 'version' );
+	$jsversion		= $element->data();
+
+	if($jsversion >= 2.4 ){
+	?>
+	<tr>		
+				<td  width="25%"><?php echo JHTML::tooltip(JText::_('DESC_SHOW_JS_TOOLBAR'), JText::_('SHOW_JS_TOOLBAR'), '', 
+						JText::_('SHOW_JS_TOOLBAR'));
+				?>
+				</td>
+				<?php
+						$value= '';
+						if($profileimport_config['show_js_toolbar']==0)
+							$value = 0;
+						else if($profileimport_config['show_js_toolbar']==1)
+							$value = 1;
+						$sa_reg_show_js= array(0=>JText::_('PF_NO'), 1=>JText::_('PF_YES') );
+						$options_reg_show_js= array();
+					
+						foreach($sa_reg_show_js as $key_reg_show_js=>$value_reg_show_js) {
+							$options_reg_show_js[] = JHTML::_('select.option', $key_reg_show_js, $value_reg_show_js);
+						}
+				?>
+				<td class="setting-td">
+					<?php echo $radiolist1 = JHTML::_('select.radiolist', $options_reg_show_js, 'data[show_js_toolbar]', 'class="inputbox fieldlist"  ', 'value', 'text', $value);?>
+				</td>
+	</tr>
+	<?php 
+	}
+}
+?>
 	</table>
 	
 <?php			
