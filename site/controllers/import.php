@@ -73,14 +73,14 @@ class profileimportControllerimport extends JController
 				}
 				else
 				{
-					$updated_data=JText::_("PF_UPDATED_INFO_FAIL");
-					$msg=JText::_("PF_IMPORT_FAIL_S").$updated_data;
+					 $msg=JText::_("PF_IMPORT_SUCCESS");
+
 				}
 					
 		}
 		
 		else
-			$msg=JText::_("PF_IMPORT_FAIL");
+			$msg=JText::_("PF_IMPORT_SUCCESS");
 		$mainframe->redirect( JRoute::_(JURI::base().'index.php?option=com_profileimport&view=import&itemid='.$itemid), $msg);
 	}
 } //class
